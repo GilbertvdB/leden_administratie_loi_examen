@@ -1,0 +1,112 @@
+<html>
+    <head>
+    <!-- Scripts -->
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+        <title>App Name - <?php echo $__env->yieldContent('title'); ?></title>
+    </head>
+    <body class="container mx-auto border border-gray-200">
+    	<?php if (isset($component)) { $__componentOriginal99db13291ff287454d08b974e14dad64f9e2c6f3 = $component; } ?>
+<?php $component = App\View\Components\Header::resolve([] + (isset($attributes) ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('header'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $constructor = (new ReflectionClass(App\View\Components\Header::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>     
+    		 <?php $__env->slot('title', null, []); ?> 
+        		Leden Administratie
+   	 		 <?php $__env->endSlot(); ?>
+      <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal99db13291ff287454d08b974e14dad64f9e2c6f3)): ?>
+<?php $component = $__componentOriginal99db13291ff287454d08b974e14dad64f9e2c6f3; ?>
+<?php unset($__componentOriginal99db13291ff287454d08b974e14dad64f9e2c6f3); ?>
+<?php endif; ?>
+    	
+	<div class="sidebar">
+    	<div class="w-1/5 border border-gray-200 float-left">
+    	<h3 class="text-lg text-center py-1 pl-2">Menu</h3>
+ 		<a href="#" class="block hover:bg-gray-200 py-1 pl-2" >Contributies</a>
+ 		<a href="#" class="block hover:bg-gray-200 py-1 pl-2" >Families</a>
+  		<a href="#" class="block hover:bg-gray-200 py-1 pl-2">Staffels</a>
+  		<a href="#" class="block hover:bg-gray-200 py-1 pl-2">Contact</a>
+        </div>
+	</div>
+	
+	
+        <div class="content border border-black w-4/5 float-right">
+		  <div class="searchbox"> Searh Box Input Form</div>
+          <br>
+          <div class="test grid grid-cols-2">
+            <div class="">  Families  <div class="float-right">Contributies</div></div>
+            <div class="pl-2">Column</div>
+            <div><details>
+  				<summary>Family van Appel <div class="float-right">$250</div></summary>
+  					<ul class="pl-5">
+  					<li>Vaders van Appel<div class="float-right">$100</div></li>
+  					<li>Moeders van Appel<div class="float-right">$100</div></li>
+  					<li>Eerste Kind van Appel<div class="float-right">$50</div></li>
+  					</ul>
+				</details>
+			</div>
+            <div class="pl-2">02</div>
+            <div><details>
+  				<summary>Family Beren <div class="float-right">$300</div></summary>
+  					<ul class="pl-5">
+  					<li>Vaders Beren<div class="float-right">$100</div></li>
+  					<li>Moeders Beren<div class="float-right">$100</div></li>
+  					<li>Eerste Kind Beren<div class="float-right">$50</div></li>
+  					<li>Tweede Kind Beren<div class="float-right">$50</div></li>
+  					</ul>
+				</details>
+            </div>
+            <div class="pl-2">04</div>
+      
+          </div>
+          
+          <br>
+          <?php if (isset($component)) { $__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4 = $component; } ?>
+<?php $component = App\View\Components\Userbox::resolve(['target' => 'Admin'] + (isset($attributes) ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('userbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $constructor = (new ReflectionClass(App\View\Components\Userbox::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+          First
+           <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4)): ?>
+<?php $component = $__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4; ?>
+<?php unset($__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4); ?>
+<?php endif; ?>
+             <?php if (isset($component)) { $__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4 = $component; } ?>
+<?php $component = App\View\Components\Userbox::resolve(['target' => 'Admin & Penny'] + (isset($attributes) ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('userbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $constructor = (new ReflectionClass(App\View\Components\Userbox::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+             Second
+              <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4)): ?>
+<?php $component = $__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4; ?>
+<?php unset($__componentOriginal91f988942ae5bc01ee321aab0db49776270ad0a4); ?>
+<?php endif; ?>
+          
+        </div>
+        
+     <div class="footer clear-both">
+       <div class="p-4 border border-gray-200">
+          <h3 class="font-semibold text-center text-4xl text-gray-800 leading-tight" >Footer</h3>
+       </div>
+     </div>
+    
+    </body>
+</html>
+<?php /**PATH C:\Users\xyber\leden_adm\resources\views/test.blade.php ENDPATH**/ ?>

@@ -1,0 +1,29 @@
+{
+  "hash": "e89d5cc0",
+  "browserHash": "4ef1eb05",
+  "optimized": {
+    "alpinejs": {
+      "src": "../../alpinejs/dist/module.esm.js",
+      "file": "alpinejs.js",
+      "fileHash": "c177bcef",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../axios/index.js",
+      "file": "axios.js",
+      "fileHash": "b8ed91b8",
+      "needsInterop": true
+    },
+    "lodash": {
+      "src": "../../lodash/lodash.js",
+      "file": "lodash.js",
+      "fileHash": "4f447168",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-RSJERJUL": {
+      "file": "chunk-RSJERJUL.js"
+    }
+  }
+}
