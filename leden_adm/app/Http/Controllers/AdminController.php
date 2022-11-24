@@ -24,15 +24,14 @@ class AdminController extends Controller
     public function index()
     {   
         if (Gate::allows('viewAny', User::class)) {
-            //do action
-        
-        
-        $data = User::all();
 
+        $data = User::select('users.id', 'users.name', 'users.email', 'roles.naam')
+        ->join('roles', 'roles.id', '=', 'users.role_id')
+        ->get();
+        
         return view('admin.index')
-        ->with(['data'=> $data]); 
+        ->with(['data'=> $data]);
         }
-
     }
 
     /**
