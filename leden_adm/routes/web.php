@@ -11,7 +11,7 @@ use App\Http\Controllers\FamilielidController;
 use App\Http\Controllers\SoortlidController;
 use App\Http\Controllers\BoekjaarController;
 use App\Http\Controllers\ContributieController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Famdisplay;
 /*
