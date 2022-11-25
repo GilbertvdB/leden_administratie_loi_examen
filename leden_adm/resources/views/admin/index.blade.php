@@ -44,10 +44,7 @@
                     <form method="POST" action="{{ route('admin.destroy', $user) }}">
                         @csrf
                         @method('delete')
-                        <x-dropdown-link :href="route('admin.destroy', $user)" onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Verwijderen') }}
-                        </x-dropdown-link>
-                        <button>Pop-Up</button>
+					<button class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
                     </form>
                 </x-slot>
             </x-dropdown>
