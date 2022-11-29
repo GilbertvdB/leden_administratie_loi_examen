@@ -12,6 +12,7 @@ use App\Http\Controllers\SoortlidController;
 use App\Http\Controllers\BoekjaarController;
 use App\Http\Controllers\ContributieController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MainController;
 
 use App\Http\Controllers\Famdisplay;
 /*
@@ -48,9 +49,8 @@ Route::get('/test', function () {
 })->middleware(['auth', 'verified'])->name('test');
 
 // route for official app
-Route::get('/leden', function () {
-    return view('ledendash');
-})->middleware(['auth', 'verified'])->name('ledendash');
+Route::get('/leden', [MainController::class, 'info'])->middleware(['auth', 'verified'])->name('ledendash');
+Route::post('/leden', [MainController::class, 'search'])->middleware(['auth', 'verified'])->name('ledendash');
 
 
 Route::resource('/ledens', LedenController::class);

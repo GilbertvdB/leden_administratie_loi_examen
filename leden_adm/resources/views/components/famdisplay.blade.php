@@ -1,16 +1,29 @@
 <div class="border border-blue-200 p-2">
     <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
+    
 
-<h1 class="font-bold leading-5 text-2xl">Leden Contributie</h1>
+    <!-- Title -->
+	<h1 class="font-bold leading-5 text-2xl">Leden Contributies</h1>
 	<h2 class="mt-1 text-Gray-600 text-xl">Jaar 2022</h2>
 	<br>
+	
+	<!--  Search Bar -->
+	<div class="my-5 py-5 px-5 mx-5">
+    <form action="{{ route('ledendash')}}" method="POST">
+        @csrf
+        <input type="search" class="mb-2 rounded-3xl border-blue-200 active:border-blue-400" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
+	</form>	
+	</div>	
+	
+	<!-- Info table -->
+	<div class="">
 	<span class="font-bold px-2">Familie</span><span class="font-bold float-right">Contributie</span>
     <hr class="mt-2 border-indigo-200">
 
-    @php($families = $fam_contributies_info->pluck('id')->unique()->values())
+    @php($families = $info->pluck('id')->unique()->values())
     
     @foreach ($families as $familie)
-    	@php($leden = $fam_contributies_info->where('id', '==', $familie))
+    	@php($leden = $info->where('id', '==', $familie))
     	@php($familieNaam = $leden->value('familie'))
     	@php($familieContributie = $leden->sum('bedrag'))
     	@php($familieAdres = $leden->value('adres'))
@@ -60,7 +73,13 @@
             </details>
             @endforeach
 		</div>
-</div>
+		</div>
+		
+		<!-- Pagination prev & next link -->
+		<div class="mt-2">
+		{{ $info->links() }}
+		</div>
 	
+	</div>
 </div>	
 <br>

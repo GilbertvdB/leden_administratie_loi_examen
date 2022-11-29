@@ -5,11 +5,10 @@
                 <div>
                     Welcome! You're logged in! Yes working!
 		<br><br>
-		<div class="searchbox"> Searh Box Input Form</div>
-		<br>
+		
 		<!-- LEDEN INFO BOX RENAME -->
-		<x-famdisplay />
-                
+		<x-famdisplay message="Helo" :info="$info" />
+
 		</div>
         </div>
     </div>
