@@ -1,14 +1,19 @@
-<x-app-layout>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <form method="POST" action="{{ route('boekjaar.store') }}">
-            @csrf
-            <h1> Enter details into Boekjaar</h1>
-                    <pre>
-                    <div class="form-input"><label>Contributie Id </label> <input type="text" name="contributie_id"></div>
-		    <div class="form-input"><label>Jaar           </label> <input type="text" name="jaar"></div>
-                    </pre>
-            <x-input-error :messages="$errors->get('message')" class="mt-2" />
-            <x-primary-button class="mt-4">{{ __('Submit') }}</x-primary-button>
-        </form>
+<div>
+		
+		
+		
+        <form id="boekjaar" action="{{ route('jaar') }}" method="POST">
+        @csrf
+        <label>Boekjaar</label><select name="jaar" class="border-0 shadow-lg hover:bg-blue-50" form="boekjaar" onchange="this.form.submit()">
+                <option value="{{ $jaar}}" selected="selected" hidden="hidden">{{ $jaar }}</option>
+                <option value="2021">2021 </option>
+                <option value="2022">2022</option>
+				</select>
+				</form>
+		<!-- 		
+		@if(session('jaar'))
+    <div class="alert alert-success" role="alert">
+        {{ session('jaar') }}
     </div>
-</x-app-layout>
+	@endif  -->
+</div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\BoekjaarController;
 use App\Models\Familielid;
 use App\Models\Familie;
 use Illuminate\Support\Facades\DB;
@@ -25,11 +26,17 @@ class MainController extends Controller
     // TODO display using relationship models ie famiilelid->naam->bedrag bv
     public function info()
     {
+        //set boekjaar
+        $bk_jaar = new BoekjaarController();
+//         $bk_jaar->set_boekjaar();
+        
+        $jaar = $bk_jaar->get_boekjaar();
+        
         $search = '';
 
         $users = $this->db_info($search);
         
-        return view('ledendash')->with(['info' => $users]);
+        return view('ledendash')->with(['info' => $users])->with(['jaar' => $jaar]);
         
     }
     

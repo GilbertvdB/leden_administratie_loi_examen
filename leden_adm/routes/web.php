@@ -49,19 +49,15 @@ Route::get('/test', function () {
 })->middleware(['auth', 'verified'])->name('test');
 
 // route for official app
-Route::get('/leden', [MainController::class, 'info'])->middleware(['auth', 'verified'])->name('ledendash');
-Route::post('/leden', [MainController::class, 'search'])->middleware(['auth', 'verified'])->name('ledendash');
+Route::get('/leden', [MainController::class, 'info'])
+->middleware(['auth', 'verified'])->name('ledendash');
+
+Route::post('/leden', [MainController::class, 'search'])
+->middleware(['auth', 'verified'])->name('ledendash');
 
 
-Route::resource('/ledens', LedenController::class);
-
-
-Route::resource('adres', AdresController::class)
-
-->only(['index', 'store'])
-
-->middleware(['auth', 'verified']);
-
+Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
+->middleware(['auth', 'verified'])->name('jaar');
 
 // routes for table resource models
 // Route::resource('familie', FamilieController::class)

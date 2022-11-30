@@ -7,6 +7,27 @@ use Illuminate\Http\Request;
 
 class BoekjaarController extends Controller
 {
+    
+    public $jaar;
+    
+    public function set_boekjaar()
+    {
+        $this->jaar = 2022;
+    }
+    
+    public function update_boekjaar(Request $request)
+    {
+        $jaar = $request->get('jaar');
+        $this->jaar = $jaar;
+        
+        return back()->with('jaar', $jaar);
+    }
+    
+    public function get_boekjaar()
+    {
+        return $this->jaar;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +45,7 @@ class BoekjaarController extends Controller
      */
     public function create()
     {
-        //
+        return view('boekjaar.create');
     }
 
     /** TEST METHOD

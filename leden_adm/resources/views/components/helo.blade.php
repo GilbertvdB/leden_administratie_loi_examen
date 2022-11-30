@@ -34,7 +34,7 @@
 <br>
 <div>
 
-test:  {{ $test }}
+Jaar:  {{ $jaar }}
 <br>lid id: 
 <br>soortlid: 
 <br>s table: 

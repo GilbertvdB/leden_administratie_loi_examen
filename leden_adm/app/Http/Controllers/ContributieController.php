@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class ContributieController extends Controller
 {
+    public $jaar;
+
+    public function update_boekjaar(Request $request)
+    {
+        $jaar = $request->get('jaar');
+        $this->jaar = $jaar;
+        
+        return back()->with('jaar', $jaar);
+    }
+
+        
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +42,7 @@ class ContributieController extends Controller
     {
         return view('contributie.create');
     }
+    
     
     public function bereken_leeftijd($geboortedatum)
     {
@@ -151,11 +163,21 @@ class ContributieController extends Controller
      */
     public function show($fam_id)
     {
+//         $jaar = $this->jaar;
+//         if (empty($jaar)) {
+//             $this->set_boekjaar();
+//             $jaar = $this->jaar;
+//         }
+//         $jaar = '';
+        
+        
         $familieLeden = DB::table('families')
         ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
         ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
-        ->select('families.naam as familie','familielids.id as l_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag')
+        ->leftjoin('boekjaars', 'boekjaars.contributie_id', '=', 'contributies.id')
+        ->select('families.naam as familie','familielids.id as l_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag', 'boekjaars.jaar')
         ->where('families.id', $fam_id)
+//         ->where([['families.id', $fam_id], ['boekjaars.jaar', $jaar]])
         ->get();
         
         
@@ -169,7 +191,7 @@ class ContributieController extends Controller
         
         return view('contributies')
 //         ->with('test', $soort)
-//         ->with('bedrag', $bedrag)
+//         ->with('jaar', $jaar)
         ->with('fam_leden', $familieLeden)
         ->with('fam_id', $fam_id)
         ->with('fam_naam', $famNaam[0]);
@@ -234,7 +256,8 @@ class ContributieController extends Controller
 //             $soort->store($request);
         }
             
-        return $this->show($fam_id);
+//         return $this->show($fam_id);
+        return back()->with(['status' => 'Data is aangepast!']);
             // TODO save and refresh model
 //         $table = $lid->soortleden;
 //         return view('components.helo')
