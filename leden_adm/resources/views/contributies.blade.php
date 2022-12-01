@@ -1,35 +1,70 @@
 <x-leden-layout>
     <div class="max-w-4xl mx-auto p-2 border overflow-auto bg-white">
-            <h1 class="text-2xl">Contributies Familie {{ $fam_naam }}</h1>
+        <div class="flex flex-column">
+        <h1 class="text-2xl">Contributies Familie {{ $fam_naam }}</h1>
+        <div class="p-2"><a href="{{ route('familie.show', ['familie' => $fam_id]) }}">Naar Profiel</a></div>
+        </div>
+        <br>
         
-        @php($jaar = session('jaar'))
         <!-- Set default boekjaar -->
+        @php($jaar = session('jaar'))
        	@empty($jaar)
        		@php( $jaar = date("Y"))
        	@endempty
         
-        
-        @include('boekjaar.index')
-        <br>
+		@php($view = $fam_leden->where('jaar', $jaar))
 
-	
-	<details><summary>info</summary>
-	@php($dat = $fam_leden->where('jaar', $jaar))
-	@php($dat2 = $fam_leden->where('jaar', ''))
-	@php($view = $dat->merge($dat2))
-	
-	{{ $view }}
-	</details>
-	<br>
-	<div class="pl-2"><span><a href="{{ route('familie.show', ['familie' => $fam_id]) }}">Naar Profiel</a></span></div>
-<div class="flex flex-row">	
-    <!-- DISPLAY INFO TABLE -->
-    <div class="flex-none">
+		
+	<!-- Incompleet profiel -->
+    @if($incompleet->isNotEmpty())
+    <details><summary>Incompleet</summary>
+    <div>
+    	<p class="pl-2 italic text-red-700">Incompleet contributie profiel voor:</p>
+    	<table class="table-auto border-separate border-spacing-0 border border-red-300">
+        <thead class="text-left">
+          <tr class="bg-zinc-100">
+            <th class="p-2">Naam</th>
+            <th>Geboortedatum</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach ($incompleet as $lid)
+          <tr class="hover:bg-blue-50">
+            <td class="p-2">{{ $lid->naam }}</td>
+            <td >{{ $lid->geboortedatum }}</td>
+            @can('update', App\Models\Contributie::class)
+                	<td>
+                	<x-dropdown-link :href="route('contributie.edit', $lid->l_id)">
+                                            {{ __('Wijzig') }}
+                                        </x-dropdown-link>
+                	</td>
+                	 @endcan
+          </tr>
+         @endforeach 
+        </tbody>
+        </table>         
+    </div>
+    <br>
+    @endif
+    </details>
+    <br>
     
+    		<!--  Boekjaar selectie -->
+ 			<div>
+            @include('boekjaar.index')
+            </div>
+<div class="flex flex-row">	
+    
+    <!-- DISPLAY INFO TABLE -->
+    @if($view->isNotEmpty())
+    
+    <div class="flex-none">
+    	
         <!--  <table class="table-auto border-separate border-spacing-2 border border-blue-200"> -->
         <table class="table-auto px-2 border-separate border-spacing-0 border border-blue-200">
-            <thead>  
-                <tr>
+            <thead class="text-left">  
+                <tr class="bg-zinc-100">
                 <th>Id</th>
                   <th>Naam</th>
                   <th>Geboortedatum</th>
@@ -42,30 +77,24 @@
             </thead>
             <tbody>
             @foreach ($view as $lid)
-            <form id="{{ $lid->naam }}" method="POST" action="{{ route('contributie.update', $fam_id) }}">
-            @csrf
-            @method('patch')
-            <input type="hidden" name="id" value="{{ $lid->id }}">
-            <input type="hidden" name="leeftijd" value="{{ $lid->leeftijd }}">
-            <input type="hidden" name="familielid_id" value="{{ $lid->l_id }}">
               <tr class="hover:bg-blue-50">
                 <td class="pr-2">{{ $lid->id }}</td>
                 <td class="pr-2">{{ $lid->naam }}</td>
                 <td class="pr-2">{{ $lid->geboortedatum }}</td>
                 <td class="text-center pr-2">{{ $lid->leeftijd }}</td>
-                <td class="pr-2"><label></label><select name="soortlid" class="border-0 shadow-lg hover:bg-blue-50" form="{{ $lid->naam }}">
-                <option value="{{ $lid->soortlid }}" selected="selected" hidden="hidden">{{ $lid->soortlid }}</option>
-                <option value="Jeugd">Jeugd </option>
-                <option value="Aspirant">Aspirant</option>
-                <option value="Junior">Junior</option>
-                <option value="Senior">Senior</option>
-                <option value="Oudere">Oudere</option>
-        	</select></td>
-                <td class="pr-2">@if($lid->bedrag)&euro;<input type="text" name="bedrag" value="{{ $lid->bedrag }}" class="border-0 w-12  shadow-lg pl-0 hover:bg-blue-50" >@endif</td>
+                <td class="pr-2">{{ $lid->soortlid }}</td>
+                <td class="pr-2">&euro;{{ $lid->bedrag }}</td>
                 <td class="pr-2">{{ $lid->jaar }}</td>
                 @can('update', App\Models\Contributie::class)
-                	<td>@if($jaar == date("Y"))<button type="submit"><u class="text-xs">> Wijzig </u></button>@endif</td>
-                	 @endcan	
+                	<td>@if($jaar == date("Y"))<x-dropdown-link :href="route('contributie.edit', $lid->l_id)">
+                                            {{ __('Wijzig') }}
+                                        </x-dropdown-link>@endif</td>
+                	 @endcan
+                	 
+                	<!-- alternate 
+                	<td>
+                	<button type="submit"><u class="text-xs">> Wijzig </u></button>
+                	</td> 	-->
               </tr>
               </form>
             @endforeach
@@ -85,5 +114,8 @@
 	</div>
 </div>
 
+@else
+	<div class="p-2">Geen informatie om weer te geven voor het boekjaar {{ $jaar }}.</div>
+@endif
 </div>
 </x-leden-layout>

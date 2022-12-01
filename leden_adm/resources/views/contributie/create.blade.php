@@ -1,5 +1,5 @@
-<x-app-layout>
-    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+<x-leden-layout>
+    <div class="max-w-4xl mx-auto p-2 border overflow-auto bg-white sm:p-6 lg:p-8">
         <form method="POST" action="{{ route('contributie.store') }}">
             @csrf
             <h1> Enter details into Contributie</h1>
@@ -13,4 +13,4 @@
             <x-primary-button class="mt-4">{{ __('Submit') }}</x-primary-button>
         </form>
     </div>
-</x-app-layout>
+</x-leden-layout>

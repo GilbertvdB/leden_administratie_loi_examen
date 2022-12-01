@@ -163,14 +163,6 @@ class ContributieController extends Controller
      */
     public function show($fam_id)
     {
-//         $jaar = $this->jaar;
-//         if (empty($jaar)) {
-//             $this->set_boekjaar();
-//             $jaar = $this->jaar;
-//         }
-//         $jaar = '';
-        
-        
         $familieLeden = DB::table('families')
         ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
         ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
@@ -180,19 +172,13 @@ class ContributieController extends Controller
 //         ->where([['families.id', $fam_id], ['boekjaars.jaar', $jaar]])
         ->get();
         
-        
         $famNaam = $familieLeden->pluck('familie');
-        
-        // reverse lookup - als er een contributie bestaat - nvt wanneer de soortlid null  is.
-//         $data = Contributie::find(6);
-//         $soort = $data->soortleden[0]->familielid->soortlid;
-//         $bedrag = $data->bedrag;
-        
-        
+        $incompleet_profiel = $familieLeden->where('jaar', '');
+
         return view('contributies')
 //         ->with('test', $soort)
-//         ->with('jaar', $jaar)
         ->with('fam_leden', $familieLeden)
+        ->with('incompleet', $incompleet_profiel)
         ->with('fam_id', $fam_id)
         ->with('fam_naam', $famNaam[0]);
 
@@ -205,9 +191,19 @@ class ContributieController extends Controller
      * @param  \App\Models\Contributie  $contributie
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contributie $contributie)
+    public function edit($id)
     {
-        //
+        $this->authorize('update', User::class);
+        $lid = Familielid::find($id);
+        //incompleet profiel
+        if ($lid->lidContributie) {
+            $contrib = $lid->lidContributie;
+        }
+        else {$contrib = "";}
+        
+        return view('contributie.edit')
+        ->with(['lid' => $lid])
+        ->with(['contributie' => $contrib]);
     }
 
     /**
@@ -217,7 +213,7 @@ class ContributieController extends Controller
      * @param  \App\Models\Contributie  $contributie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $fam_id)
+    public function updated(Request $request, $fam_id)
     {   
         $this->authorize('update', Contributie::class);
         
@@ -275,6 +271,51 @@ class ContributieController extends Controller
         
         
     }
+    
+    
+    public function update(Request $request, $id)
+    {
+        $this->authorize('update', Contributie::class);
+        
+        $validatedData = $request->validate([
+            'soortlid' => 'required|string',
+            'bedrag' => 'required_with:id|integer'
+        ]);
+        
+        $new_soortlid = $request->get('soortlid');
+        $lid = Familielid::find($id);
+        $lid_contributie = $lid->lidContributie;
+        
+        if ($lid->soortlid) {
+            $lid_contributie->update($validatedData);
+            
+            // update soortlid in familielid en soortlids tabel
+            $lid->soortlid = $new_soortlid;
+            $lid->soortleden->omschrijving = $new_soortlid;
+            
+            $lid->push();
+        }
+        // indien leeg create entry - TODO simplefy
+        else {
+            $lid->soortlid = $new_soortlid;
+            $lid->save();
+            $lid->refresh();
+            // autocreate table entries contributies and soortlid
+            $this->add($lid);
+            $soort = new SoortlidController();
+            $soort->add($lid);
+            
+            // using request and store
+            //             $request->mergeIfMissing(['omschrijving' => $new_soortlid]);
+            //             $soort->store($request);
+        }
+        
+        $fam_id = $lid->familie_id;
+        return redirect(route('contributie.show', $fam_id));
+        
+    }
+    
+    
 
     /**
      * Remove the specified resource from storage.
