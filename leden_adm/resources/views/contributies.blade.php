@@ -17,7 +17,7 @@
 		
 	<!-- Incompleet profiel -->
     @if($incompleet->isNotEmpty())
-    <details><summary>Incompleet</summary>
+    <details open><summary>Incompleet</summary>
     <div>
     	<p class="pl-2 italic text-red-700">Incompleet contributie profiel voor:</p>
     	<table class="table-auto border-separate border-spacing-0 border border-red-300">
