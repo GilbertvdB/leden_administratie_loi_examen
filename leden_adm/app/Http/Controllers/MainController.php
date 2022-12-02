@@ -10,33 +10,20 @@ use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
-    /**
-     * Show the profile for a given user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        return view('user.profile', [
-            'user' => User::findOrFail($id)
-        ]);
-    }
     
     // TODO display using relationship models ie famiilelid->naam->bedrag bv
     public function info()
-    {
-        //set boekjaar
-        $bk_jaar = new BoekjaarController();
-//         $bk_jaar->set_boekjaar();
-        
-        $jaar = $bk_jaar->get_boekjaar();
-        
+    {   
         $search = '';
 
         $users = $this->db_info($search);
         
-        return view('ledendash')->with(['info' => $users])->with(['jaar' => $jaar]);
+        
+//         return view('ledendash')->with(['info' => $users]);
+       
+        return view('components.helo')
+        ->with(['info' => $users]);
+
         
     }
     
@@ -52,7 +39,7 @@ class MainController extends Controller
     }
     
     
-    public function db_info($search)
+    public function db_info2($search)
     {
         $info = DB::table('families')
         ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
@@ -60,13 +47,18 @@ class MainController extends Controller
         ->select('families.id', 'families.naam AS familie', 'families.adres', 'familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.bedrag')
         ->where('families.naam', 'like', '%'.$search.'%') // display info search request
         ->orderBy('familie', 'asc')
-        //         ->get();
+//         ->get();
         ->simplePaginate(10);
         
         return $info;
         
     }
     
-    
-    
+    public function db_info($search)
+    {   
+        $info = Familie::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(5);
+        
+        return $info;
+        
+    }
 }
