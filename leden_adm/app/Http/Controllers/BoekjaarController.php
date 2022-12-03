@@ -34,8 +34,11 @@ class BoekjaarController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('boekjaar.index');
+    {   
+        $info = Boekjaar::all();
+        
+        return view('boekjaar.index')
+        ->with(['info' => $info]);
     }
 
     /**

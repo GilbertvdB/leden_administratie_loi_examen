@@ -19,12 +19,11 @@ class MainController extends Controller
         $users = $this->db_info($search);
         
         
-//         return view('ledendash')->with(['info' => $users]);
+        return view('ledendash')->with(['info' => $users]);
        
-        return view('components.helo')
-        ->with(['info' => $users]);
+//         return view('components.helo')
+//         ->with(['info' => $users]);
 
-        
     }
     
     public function search(Request $request)
@@ -56,7 +55,7 @@ class MainController extends Controller
     
     public function db_info($search)
     {   
-        $info = Familie::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(5);
+        $info = Familie::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
         
         return $info;
         

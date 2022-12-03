@@ -1,6 +1,4 @@
-<div class="border border-blue-200 p-2">
-    <!-- It is quality rather than quantity that matters. - Lucius Annaeus Seneca -->
-    
+<div class="border-blue-200 p-2">
 
     <!-- Title -->
 	<h1 class="font-bold leading-5 text-2xl">Leden Contributies</h1>
@@ -8,78 +6,77 @@
 	<br>
 	
 	<!--  Search Bar -->
-	<div class="my-5 py-5 px-5 mx-5">
-    <form action="{{ route('ledendash')}}" method="POST">
-        @csrf
-        <input type="search" class="mb-2 rounded-3xl border-blue-200 active:border-blue-400" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
-	</form>	
+	<div class="mb-2">
+    	<div class="border w-fit flex flex-row h-10 rounded-3xl border-indigo-200">
+    	<div>
+            <form id="searchbar" action="{{ route('ledendash')}}" method="POST">
+                @csrf
+                <input type="search" class="text-sm mt-1 h-8 border-none outline-red rounded-3xl" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
+        	</form>
+    	</div>
+    	<div class="bg-indigo-200 ml-2 p-2 hover:bg-indigo-300 cursor-pointer rounded-full">
+        	 <button type="submit" form="searchbar">
+        	 <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+             </svg></button>
+        </div>	
 	</div>	
-	
-	<!-- Info table -->
-	<div class="">
-	<span class="font-bold px-2">Familie</span><span class="font-bold float-right">Contributie</span>
-    <hr class="mt-2 border-indigo-200">
+	</div>
+	<!-- Display fam info table -->
+	<div class="border border-indigo-200">
+@foreach($info as $familie)
 
-    @php($families = $info->pluck('id')->unique()->values())
-    
-    @foreach ($families as $familie)
-    	@php($leden = $info->where('id', '==', $familie))
-    	@php($familieNaam = $leden->value('familie'))
-    	@php($familieContributie = $leden->sum('bedrag'))
-    	@php($familieAdres = $leden->value('adres'))
-    	@php($fam_id = $leden->value('id'))
-    	@php($notComplete = '')
-    	
-    	<!-- Incompleet profile check -->
-    	@foreach ($leden as $check)
-    		@unless ($check->naam and $check->geboortedatum and $check->soortlid and $check->bedrag)
-    		@php($notComplete = True)
-    		@break
+	<!-- Bereken totaal familie contributie -->
+	@php $sum = 0;
+	foreach($familie->familieLeden as $lid) {
+		if(empty($lid->lidContributie->bedrag)) {
+			$sum += 0; }
+		else { $sum += ($lid->lidContributie->bedrag); } 
+		}	 
+	@endphp
+	
+	<!-- Lid profiel check -->	
+	@php($notComplete = '')
+	@if($familie->familieLeden->isNotEmpty())
+    	@foreach ($familie->familieLeden as $check)
+    		@unless ($check->naam and $check->geboortedatum and $check->soortlid and $check->LidContributie->bedrag)
+    			@php($notComplete = True)
+    			@break
     		@endunless 
     	@endforeach
-    	
-    	
-		<div>
-            <details class="border-b-[1px] border-indigo-200 open:shadow-[-3px_-1px_0_0_rgba(199,210,254,1)]" >
-    		<summary class="bg-white relative cursor-pointer py-2 px-2 list-none hover:bg-blue-50">
-        			<div class="flex items-center">
-        			<h3 flex flex-col>
-    					<strong class="font-bold">{{ $familieNaam}}</strong>
-    					@if($notComplete)
+	@else
+		@php($notComplete = True)
+	@endif
+		
+	<details class="border-b-[1px] border-indigo-200 open:shadow-[-3px_-1px_0_0_rgba(199,210,254,1)]">
+	<summary class="bg-white relative cursor-pointer py-2 px-2 list-none hover:bg-blue-50">
+	<span class="font-bold">{{ $familie->naam }}</span>@if($notComplete)
     					<span class="pl-2 text-xs text-red-800">Incompleet</span>
-    					@endif
-    					<br>
-  					<!--  <small class="text-Gray-600 text-sm">Adres: {{ $familieAdres }}</small> -->	
-  					</h3>
-  						<span class="ml-auto font-bold focus:outline-none" >&euro;{{ $familieContributie }}</span>
-      				</div>
-      		</summary>
-      		<p class="pl-2"> <a href="{{ route('familie.show', ['familie' => $fam_id]) }}">Naar Profiel</a> | 
-      		<a href="{{ route('contributie.show', ['contributie' => $fam_id]) }}">Contributies</a></p>
-      			
-            <p class="pl-2">Adres: {{ $familieAdres }}</p>
-            <ul class="pl-2">
-            	@foreach ($leden as $lid)
-            	<li><div class="grid grid-cols-3">
-            			<div>{{ $lid->naam }} @unless ($lid->naam and $lid->geboortedatum and $lid->soortlid and $lid->bedrag)
+    					@endif<span class="ml-auto font-bold float-right focus:outline-none">&euro;{{ $sum }}</span></summary>
+		
+		<div><span class="pl-2">{{ $familie->adres }}</span>
+			</div>
+		<div class="mt-2"><span class="pl-2 text-sm"> <a href="{{ route('familie.show', ['familie' => $familie->id]) }}">Naar Profiel</a> | 
+      		<a href="{{ route('contributie.show', ['contributie' => $familie->id]) }}">Contributies</a></span></div>
+		<div>
+		@foreach( $familie->familieLeden as $lid)
+			<div class="flex flex-row pl-2">
+				<div class="basis-2/5">{{ $lid->naam }}@unless ($lid->naam and $lid->geboortedatum and $lid->soortlid and $lid->LidContributie->bedrag)
     					<span class="pl-2 text-xs text-red-800">Incompleet</span>
     					@endunless</div>
-            			<div class="text-center"> {{ $lid->geboortedatum }}</div>
-            			<div><span class="float-right">{{ $lid->soortlid }}</span></div>
-            		</div>
-            	</li>
-            	@endforeach
-             </ul>
-            </details>
-            @endforeach
+			<div class="basis-1/5">{{ $lid->geboortedatum }}</div> 
+			<div class="basis-1/5">{{ $lid->soortlid }}</div>
+			</div>
+			
+		@endforeach
 		</div>
-		</div>
-		
-		<!-- Pagination prev & next link -->
-		<div class="mt-2">
-		{{ $info->links() }}
-		</div>
-	
+	</details>
+@endforeach
+</div>
+
+<div class="">
+	{{ $info->links() }}
 	</div>
+
 </div>	
 <br>

@@ -19,7 +19,12 @@
 		
 		
             <!-- Page Heading -->
-                <header class="bg-white shadow">
+                <header class="bg-white shadow flex flex-row">
+                    <div class="border shrink-0 flex items-center">
+                    <a href="{{ route('ledendash') }}">
+                        <x-application-logo class="block h-16 w-auto fill-current text-gray-600" />
+                    </a>
+                </div>
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
         		<h2 class="font-semibold text-4xl text-gray-800 leading-tight">
             		{{ __('Leden Administratie') }}

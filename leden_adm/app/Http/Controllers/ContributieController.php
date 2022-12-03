@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contributie;
 use App\Models\Familielid;
+use App\Models\Boekjaar;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\BoekjaarController;
@@ -174,9 +175,13 @@ class ContributieController extends Controller
         
         $famNaam = $familieLeden->pluck('familie');
         $incompleet_profiel = $familieLeden->where('jaar', '');
-
+        
+        
+        $bk = Boekjaar::all();
+        $info = $bk->pluck('jaar')->unique()->values();
+        
         return view('contributies')
-//         ->with('test', $soort)
+        ->with('info', $info)
         ->with('fam_leden', $familieLeden)
         ->with('incompleet', $incompleet_profiel)
         ->with('fam_id', $fam_id)

@@ -1,13 +1,14 @@
 <div>
 		
-		
+		{{ $info }} <!-- MAKE COMPONENT -->
 		
         <form id="boekjaar" action="{{ route('jaar') }}" method="POST">
         @csrf
         <label>Boekjaar</label><select name="jaar" class="border-0 shadow-lg hover:bg-blue-50" form="boekjaar" onchange="this.form.submit()">
                 <option value="{{ $jaar}}" selected="selected" hidden="hidden">{{ $jaar }}</option>
-                <option value="2021">2021 </option>
-                <option value="2022">2022</option>
+                @foreach ($info as $jaar)
+                <option value={{ $jaar }}>{{ $jaar }} </option>
+                @endforeach
 				</select>
 				</form>
 		<!-- 		
