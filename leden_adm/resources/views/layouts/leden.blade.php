@@ -15,12 +15,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.leden_navigation')
-		
-		
+        		
             <!-- Page Heading -->
                 <header class="bg-white shadow flex flex-row">
-                    <div class="border shrink-0 flex items-center">
+                    <div class="shrink-0 flex items-center">
                     <a href="{{ route('ledendash') }}">
                         <x-application-logo class="block h-16 w-auto fill-current text-gray-600" />
                     </a>
