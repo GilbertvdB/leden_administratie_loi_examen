@@ -29,13 +29,13 @@
             
             <!-- Adres -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Adresses</label><input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none shadow-lg my-1">
+            	<label class="basis-1/5">Familie Adres</label><input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none shadow-lg my-1">
             </div>
             
             <div class="grid grid-cols-5">
             	<div class="col-start-2 col-end-3">
             		@can('create', App\Models\Familie::class)
-            		<button type="submit"><u>> Toevoegen </u></button>
+            		<button type="submit" class="hover:text-indigo-500"><u>> Toevoegen </u></button>
             		@endcan
             	</div>
             </div>
@@ -49,40 +49,61 @@
         	<hr class="border-[1px] border-gray-200 my-2">
 		@endempty
 
-@isset($fam)		
-	<!-- FAMILIE EDIT SECTION -->
-	<h1 class="text-2xl">Profiel Familie {{ $fam->naam }}</h1>
-	<br>
-	<div class="pl-2"><a href="{{ route('contributie.show', ['contributie' => $fam->id]) }}">Naar Contributies</a></div>
-	<div class="border border-indigo-200 p-2">
-	<div>
-		<!-- VERWIJDER PROFILE -->
-		@can('delete', $fam)
-    	<form method="POST" action="{{ route('familie.destroy', $fam) }}">
+        @isset($fam)		
+    	<!-- FAMILIE EDIT SECTION -->
+    	<h1 class="text-2xl">Profiel Familie {{ $fam->naam }}</h1>
+    	<br>
+    	<div class="pl-2 text-lg">
+    		<a href="{{ route('contributie.show', ['contributie' => $fam->id]) }}" class="hover:text-indigo-500">Naar Contributies</a>
+    	</div>
+    	
+    	<div class="border border-indigo-200 p-2">
+    	<div>
+    		<!-- Verwijder Familie profiel link -->
+    		@can('delete', $fam)
+        	<form method="POST" action="{{ route('familie.destroy', $fam) }}">
             @csrf
             @method('delete')
-            <div><span class="float-left">Profiel - </span>
-            <span class="pl-2 text-sm" ><button type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button></span></div>
-        </form>
-        @endcan
+            <div><span>Profiel - </span>
+                <span class="pl-2 text-sm" >
+                	<button type="submit" class="hover:text-indigo-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
+                </span>
+            </div>
+            </form>
+            @endcan
         
-<!-- WIJZIG PROFIEL -->        
-<form method="POST" action="{{ route('familie.update', $fam) }}">
-@csrf
-@method('patch')
-<div>
-<pre>
-<label>Familie Naam 	</label>@can('update', $fam)<input type="text" name="naam" value="{{ $fam->naam }}" required class="border-none shadow-lg my-1 focus:bg-blue-50">@else {{ $fam->naam }} @endcan
+        <!-- Wijzig Familie profiel -->        
+        <div>
+        <form method="POST" action="{{ route('familie.update', $fam) }}">
+        @csrf
+        @method('patch')
 
-<label>Familie Adres	</label>@can('update', $fam)<input type="text" name="adres" value="{{ $fam->adres }}" required class="border-none shadow-lg my-1  focus:bg-blue-50">@else {{ $fam->adres }} @endcan
-
-@can('update', $fam)				<button type="submit"><u>> Wijzig </u></button> @endcan
-</div></pre>
-<x-input-error :messages="$errors->get('naam')" class="mt-2" />
-<x-input-error :messages="$errors->get('adres')" class="mt-2" />
-</form>
-	</div>
-	<hr class="border-[1px] border-gray-200 my-2">
+        <!-- Naam -->
+        <div class="flex flex-row items-center">
+        	<label class="basis-1/5">Familie Naam</label>@can('update', $fam)<input type="text" name="naam" value="{{ old('naam') }}"  required class="border-none shadow-lg my-1">@else {{ $fam->adres }} @endcan
+        </div>
+        
+        <!-- Adres -->
+        <div class="flex flex-row items-center">
+        	<label class="basis-1/5">Familie Adres</label>@can('update', $fam)<input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none shadow-lg my-1">@else {{ $fam->adres }} @endcan
+        </div>
+    
+        <div class="grid grid-cols-5">
+            	<div class="col-start-2 col-end-3">
+            		@can('update', $fam)
+            		<button type="submit" class="hover:text-indigo-500"><u>> Wijzig</u></button>
+            		@endcan
+            	</div>
+            </div>
+        </div>
+        
+        <div>
+        	<x-input-error :messages="$errors->get('naam')" class="mt-2" />
+        	<x-input-error :messages="$errors->get('adres')" class="mt-2" />
+        </div>
+        </form>
+        </div>
+			<hr class="border-[1px] border-gray-200 my-2">
 	
 	@can('create', App\Models\Familielid::class)
 	<!-- FAMILIELID CREATE SECTION -->
