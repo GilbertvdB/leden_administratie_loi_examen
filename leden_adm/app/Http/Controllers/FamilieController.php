@@ -7,15 +7,6 @@ use Illuminate\Http\Request;
 
 class FamilieController extends Controller
 {   
-    /**
-     * Create the controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-//         $this->authorizeResource(Familie::class, 'store');
-    }
     
     /**
      * Display a listing of the resource.

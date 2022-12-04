@@ -1,6 +1,6 @@
 <x-leden-layout>
     <div class="mx-auto overflow-auto border-t-[1px] drop-shadow">
-	<div class="max-w-4xl mx-auto p-4 bg-white">
+<div class="max-w-4xl mx-auto p-4 bg-white">
 	   <!-- Title -->
 		<h1 class="font-bold leading-5 text-2xl">Gebruikers </h1>
 		<br>
