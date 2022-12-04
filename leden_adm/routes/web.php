@@ -55,9 +55,11 @@ Route::get('/leden', [MainController::class, 'info'])
 Route::post('/leden', [MainController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('ledendash');
 
-
 Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
 ->middleware(['auth', 'verified'])->name('jaar');
+
+Route::post('/familie.index', [FamilielidController::class, 'search'])
+->middleware(['auth', 'verified'])->name('zoek_lid');
 
 // routes for table resource models
 // Route::resource('familie', FamilieController::class)

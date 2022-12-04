@@ -1,14 +1,9 @@
-<div class="border-blue-200 p-2">
+<div class="border-indigo-200 p-2">
 
     <!-- Title -->
 	<h1 class="font-bold leading-5 text-2xl">Leden Contributies</h1>
 	<h2 class="mt-1 text-Gray-600 text-xl">Jaar 2022</h2>
 	<br>
-	
-	
-	<div>
-		
-	</div>
 	
 	<div class="mb-1 grid grid-cols-6 gap-4">
     	<!-- Add Familie Button -->

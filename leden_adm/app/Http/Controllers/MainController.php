@@ -31,9 +31,13 @@ class MainController extends Controller
         
         $search = $request->get('search');
         
-        $users = $this->db_info($search);
-        
-        return view('ledendash')->with(['info' => $users]);
+        if(empty($search)) {
+            return redirect(route('ledendash'));
+        }
+        else {
+            $users = $this->db_info($search);
+            return view('ledendash')->with(['info' => $users]);
+        }
         
     }
     

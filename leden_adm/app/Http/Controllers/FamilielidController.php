@@ -18,8 +18,12 @@ class FamilielidController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('familielid.index');
+    {   
+        $search = '';
+        $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
+        
+        return view('familielid.index')
+        ->with(['leden' => $leden]);
     }
 
     /**
@@ -77,9 +81,18 @@ class FamilielidController extends Controller
      * @param  \App\Models\Familielid  $familielid
      * @return \Illuminate\Http\Response
      */
-    public function show(Familielid $familielid)
+    public function search(Request $request)
     {
-        //
+        $search = $request->get('search');
+        
+        if(empty($search)) {
+            return redirect(route('familielid.index'));
+        }
+        else {
+            $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
+            return view('familielid.index')
+            ->with(['leden' => $leden]);
+        }
     }
 
     /**

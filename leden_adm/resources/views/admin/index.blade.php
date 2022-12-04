@@ -1,8 +1,10 @@
 <x-leden-layout>
-    <div class="mx-auto overflow-auto">
-	<div class="max-w-4xl mx-auto p-2 border bg-white">
-	<h1 class="text-2xl"> Display Roles Panel </h1>
-	<br>
+    <div class="mx-auto overflow-auto border-t-[1px] drop-shadow">
+	<div class="max-w-4xl mx-auto p-4 bg-white">
+	   <!-- Title -->
+		<h1 class="font-bold leading-5 text-2xl">Gebruikers </h1>
+		<br>
+		
 		<div>
 		<details><summary>Collection data</summary>
 		{{ $data}}
@@ -24,7 +26,7 @@
           <tbody>
           @foreach ($data as $user)
           
-          <tr class=" border-b border-indigo-200 last:border-0 hover:bg-blue-50">
+          <tr class=" border-b border-indigo-200 last:border-0 hover:bg-indigo-100">
             <td class="p-2">{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->naam }}</td>
@@ -38,14 +40,14 @@
                     </button>
                 </x-slot>
                 <x-slot name="content">
-                    <x-dropdown-link :href="route('admin.edit', $user )">
+                    <x-dropdown-link :href="route('admin.edit', $user )" class="hover:text-indigo-600">
                         {{ __('Wijzig') }}
                     </x-dropdown-link>
                     <form method="POST" action="{{ route('admin.destroy', $user) }}">
                         @csrf
                         @method('delete')
 
-					<button class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
+					<button class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white hover:text-indigo-600 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
                     </form>
                 </x-slot>
             </x-dropdown>
