@@ -10,12 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
-{
-    public function __construct(){
-        //
-    }
-    
-    
+{   
     /**
      * Display a listing of the resource.
      *
@@ -25,45 +20,13 @@ class AdminController extends Controller
     {   
         if (Gate::allows('viewAny', User::class)) {
 
-        $data = User::select('users.id', 'users.name', 'users.email', 'roles.naam')
+        $users_info = User::select('users.id', 'users.name', 'users.email', 'roles.naam')
         ->join('roles', 'roles.id', '=', 'users.role_id')
         ->get();
         
         return view('admin.index')
-        ->with(['data'=> $data]);
+        ->with(['gebruikers'=> $users_info]);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
     }
 
     /**
@@ -78,7 +41,6 @@ class AdminController extends Controller
         $user = User::find($id);
         
         return view('admin.edit')->with(['user' => $user]);
-//         return view('components.helo')->with(['test' => $gegevens]);
     }
 
     /**

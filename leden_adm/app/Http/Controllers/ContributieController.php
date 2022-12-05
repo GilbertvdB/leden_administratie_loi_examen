@@ -105,6 +105,7 @@ class ContributieController extends Controller
         
         return $bedrag;
     }
+    
     /** TEST METHOD
      * Store a newly created resource in storage.
      *
@@ -259,8 +260,6 @@ class ContributieController extends Controller
         
     }
     
-    
-
     /**
      * Remove the specified resource from storage.
      *

@@ -1,12 +1,9 @@
 <x-leden-layout>
     <div class="max-w-4xl mx-auto p-2 border overflow-auto bg-white sm:p-6 lg:p-8">
-        <details><summary>Data</summary>
-	{{ $lid }}
+	<h1 class="text-lg">Contributie aanpassen</h1>
 	<br>
 	
-	</details>
-	<br>
-	<div class="form" >
+	<div class="form max-w-xl" >
 		<form name="lid" method="POST" action="{{ route('contributie.update', $lid->id) }}">
             @csrf
 			@method('patch')
@@ -71,10 +68,10 @@
             </div>
             <br>
             
-					<!-- Staffels info box -->
-	<div class="">
-    	<x-staffels-info />
-	</div>
+			<!-- Staffels info box -->
+        	<div class="">
+            	<x-staffels-info />
+        	</div>
 			
             <div class="flex items-center justify-start mt-4">
 
@@ -88,9 +85,5 @@
                 
             </div>
         </form>
-		
-
-		
-		
     </div>
 </x-leden-layout>
