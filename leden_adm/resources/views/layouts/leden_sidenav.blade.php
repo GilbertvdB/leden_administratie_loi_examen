@@ -24,6 +24,7 @@
 			<a href="{{ route('admin.index') }}" class="block hover:bg-indigo-100 py-1 pl-2">Authenticatie</a>
 			@endcan</li>
   		</ul>
+  		@can('update', App\Models\User::class)
   		<details><summary class="cursor-pointer list-none hover:bg-indigo-100 flex item-center py-1 pl-2">
   		<div>Admin</div>
  		<div class="ml-1">
@@ -45,6 +46,7 @@
     		@endcan
     	</div>
         </details>
+        @endcan
         <!--  
         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
             {{ __('Dashboard') }}

@@ -176,17 +176,16 @@ class ContributieController extends Controller
         $famNaam = $familieLeden->pluck('familie');
         $incompleet_profiel = $familieLeden->where('jaar', '');
         
-        
+        // verschillende jaren data
         $bk = Boekjaar::all();
         $info = $bk->pluck('jaar')->unique()->values();
         
         return view('contributies')
-        ->with('info', $info)
+        ->with('jaren_info', $info) //voor boekjaar selectie
         ->with('fam_leden', $familieLeden)
         ->with('incompleet', $incompleet_profiel)
-        ->with('fam_id', $fam_id)
-        ->with('fam_naam', $famNaam[0]);
-
+        ->with('familie_id', $fam_id)
+        ->with('familie_naam', $famNaam[0]);
 
     }
 
@@ -217,67 +216,7 @@ class ContributieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Contributie  $contributie
      * @return \Illuminate\Http\Response
-     */
-    public function updated(Request $request, $fam_id)
-    {   
-        $this->authorize('update', Contributie::class);
-        
-        $validatedData = $request->validate([
-            'soortlid' => 'required|string',
-            'bedrag' => 'required_with:id|integer'
-        ]);
-        
-        $l_id = $request->get('familielid_id');
-        $id = $request->get('id');
-        $new_soortlid = $request->get('soortlid');
-        $lid = Familielid::find($l_id);
-        $lid_contributie = Contributie::find($id);
-        
-        if ($lid->soortlid) {
-            $lid_contributie->update($validatedData);
-            
-            // update soortlid in familielid en soortlids tabel
-            $lid->soortlid = $new_soortlid;
-            $lid->soortleden->omschrijving = $new_soortlid;
-            
-            $lid->push();
-        }
-        // indien leeg create entry - TODO simplefy
-        else {
-            $lid->soortlid = $new_soortlid;
-            $lid->save();
-            $lid->refresh();
-            // autocreate table entries contributies and soortlid
-            $this->add($lid);
-            $soort = new SoortlidController();
-            $soort->add($lid);
-            
-                // using request and store
-//             $request->mergeIfMissing(['omschrijving' => $new_soortlid]);
-//             $soort->store($request);
-        }
-            
-//         return $this->show($fam_id);
-        return back()->with(['status' => 'Data is aangepast!']);
-            // TODO save and refresh model
-//         $table = $lid->soortleden;
-//         return view('components.helo')
-// //         ->with ('data', $huidig_bedrag)
-//         ->with ('contributie_id',$id)
-//         ->with ('l_id',$l_id)
-//         ->with ('soort', $new_soortlid)
-//         ->with ('s_table', $table);
-        
-
-//  Reverese lookup via contributie        
-//         $data = Contributie::find(6);
-//         $soort = $data->soortleden[0]->familielid->soortlid;
-//         $bedrag = $data->bedrag;
-        
-        
-    }
-    
-    
+     */    
     public function update(Request $request, $id)
     {
         $this->authorize('update', Contributie::class);

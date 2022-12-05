@@ -62,7 +62,7 @@ class FamilieController extends Controller
         $leden_data = Familie::find($familie)->familieLeden;
         
         return view('/famedit')
-        ->with(['fam' => $fam_data])
+        ->with(['familie' => $fam_data])
         ->with(['leden' => $leden_data]);
     }
 
