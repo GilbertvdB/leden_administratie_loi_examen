@@ -1,4 +1,4 @@
-<div class="border p-2 text-sm bg-yellow-50">
+<div {{ $attributes->merge(['class' => 'border p-2 bg-yellow-50']) }}>
     <p><u>Contributies info</u></p>
     <p>Basis contributie 2022:  &euro;100</p>
     <p><u>Jeugd:</u> Jonger dan 8 jaar 50% korting.</p>

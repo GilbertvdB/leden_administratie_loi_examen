@@ -198,7 +198,7 @@ class ContributieController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('update', User::class);
+        $this->authorize('update', Contributie::class);
         $lid = Familielid::find($id);
         //incompleet profiel
         if ($lid->lidContributie) {

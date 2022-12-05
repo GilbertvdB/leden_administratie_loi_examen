@@ -70,7 +70,7 @@
             
 			<!-- Staffels info box -->
         	<div class="">
-            	<x-staffels-info />
+            	<x-staffels-info class="text-sm"/>
         	</div>
 			
             <div class="flex items-center justify-start mt-4">

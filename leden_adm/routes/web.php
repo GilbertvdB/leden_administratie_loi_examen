@@ -61,6 +61,10 @@ Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
 Route::post('/familie.index', [FamilielidController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_lid');
 
+Route::get('/contributie.staffels', function () {
+    return view('contributie.staffels');
+})
+->middleware(['auth', 'verified'])->name('staffels');
 // routes for table resource models
 // Route::resource('familie', FamilieController::class)
 // ->middleware(['auth', 'verified']);

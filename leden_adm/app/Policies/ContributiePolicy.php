@@ -59,7 +59,7 @@ class ContributiePolicy
     {
         return $user->role_id == Role::PENNINGMEESTER
 		? Response::allow()
-                : Response::deny('You do not have the permission for this action.');
+        : Response::deny('You do not have the permission for this action.');
     }
 
     /**
@@ -72,8 +72,8 @@ class ContributiePolicy
     public function update(User $user)
     {
         return $user->role_id == Role::PENNINGMEESTER
-		? Response::allow()
-                : Response::deny('You do not have the permission for this action.');
+        ? Response::allow()
+        : Response::deny('You do not have the permission for this action.');
     }
 
     /**
@@ -87,7 +87,7 @@ class ContributiePolicy
     {
         return $user->role_id == Role::PENNINGMEESTER
 		? Response::allow()
-                : Response::deny('You do not have the permission for this action.');
+        : Response::deny('You do not have the permission for this action.');
     }
 
     /**
@@ -113,6 +113,6 @@ class ContributiePolicy
     {
         return $user->role_id == Role::PENNINGMEESTER
 		? Response::allow()
-                : Response::deny('You do not have the permission for this action.');
+        : Response::deny('You do not have the permission for this action.');
     }
 }

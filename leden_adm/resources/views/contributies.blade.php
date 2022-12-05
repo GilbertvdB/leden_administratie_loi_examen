@@ -63,7 +63,7 @@
     	<div class="w-2/5">
         	<br>
         	<details><summary class="list-none cursor-pointer">Staffels</summary>
-        	<x-staffels-info />
+        	<x-staffels-info class="text-sm"/>
         	</details>
     	</div>
 	</div>
