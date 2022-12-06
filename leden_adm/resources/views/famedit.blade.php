@@ -5,25 +5,25 @@
         <!-- FAMILIE CREATE SECTION -->
         @empty($familie)
     	<h1 class="text-lg">Voeg Familie toe</h1>
-    	<div  class="border-[1px] border-indigo-200 border-box pl-2">
+    	<div  class="border-[1px] border-sky-200 border-box pl-2">
 
         	<form method="POST" action="{{ route('familie.store') }}">
         	@csrf
         
             <!-- Naam -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  required class="border-none shadow-xl my-1">
+            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
             </div>
             
             <!-- Adres -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Adres</label><input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none shadow-xl my-1">
+            	<label class="basis-1/5">Familie Adres</label><input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
             </div>
             
             <div class="grid grid-cols-5">
             	<div class="col-start-2 col-end-3">
             		@can('create', App\Models\Familie::class)
-            		<button type="submit" class="hover:text-indigo-500"><u>> Toevoegen </u></button>
+            		<button type="submit" class="hover:text-sky-500"><u>> Toevoegen </u></button>
             		@endcan
             	</div>
             </div>
@@ -42,11 +42,11 @@
     	<h1 class="text-2xl">Profiel Familie {{ $familie->naam }}</h1>
     	
     	<div class="text-lg">
-    		<a href="{{ route('contributie.show', ['contributie' => $familie->id]) }}" class="hover:text-indigo-500">Naar Contributies</a>
+    		<a href="{{ route('contributie.show', ['contributie' => $familie->id]) }}" class="hover:text-sky-500">Naar Contributies</a>
     	</div>
     	<br>
     	
-    	<div class="border border-indigo-200 p-2">
+    	<div class="border border-sky-200 p-2">
     	<div>
     		<!-- Verwijder Familie profiel link -->
     		@can('delete', $familie)
@@ -55,7 +55,7 @@
             @method('delete')
             <div><span>Profiel - </span>
                 <span class="text-sm" >
-                	<button type="submit" class="hover:text-indigo-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
+                	<button type="submit" class="hover:text-sky-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
                 </span>
             </div>
             </form>
@@ -71,7 +71,7 @@
         <div class="flex flex-row items-center">
         	<label class="basis-1/5">Familie Naam</label>
         	@can('update', $familie)
-        		<input type="text" name="naam" value="{{ $familie->naam }}" required class="border-none shadow-xl my-1 focus:bg-indigo-50">
+        		<input type="text" name="naam" value="{{ $familie->naam }}" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
         	@else<span class="py-2 pl-3">{{ $familie->naam }}</span> 
         		@endcan
         </div>
@@ -80,7 +80,7 @@
         <div class="flex flex-row items-center">
         	<label class="basis-1/5">Familie Adres</label>
         	@can('update', $familie)
-        		<input type="text" name="adres" value="{{ $familie->adres }}" required class="border-none shadow-xl my-1 focus:bg-indigo-50">
+        		<input type="text" name="adres" value="{{ $familie->adres }}" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
         	@else<span class="py-2 pl-3"> {{ $familie->adres }}</span>
 				@endcan
         </div>
@@ -88,7 +88,7 @@
         <div class="grid grid-cols-5">
         	<div class="col-start-2 col-end-3">
         		@can('update', $familie)
-        		<button type="submit" class="hover:text-indigo-500"><u>> Wijzig</u></button>
+        		<button type="submit" class="hover:text-sky-500"><u>> Wijzig</u></button>
         		@endcan
         	</div>
         </div>
@@ -112,7 +112,7 @@
 	
     	<!-- FAMILIELID CREATE SECTION -->
     	@can('create', App\Models\Familielid::class)
-    	<details><summary class="block inline-flex items-center px-4 py-2 mt-2 bg-indigo-300 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-400 active:bg-indigo-500">
+    	<details><summary class="block inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-600 active:bg-sky-700">
     		+ Toevoegen</summary>
     	<div>
         	<form method="POST" action="{{ route('familielid.store') }}">
@@ -122,17 +122,17 @@
             
             <!-- Naam -->
             <div class="flex flex-row items-center">
-            <label class="basis-1/5">Naam</label><input type="text" name="naam" value="{{ old('naam') }}" required class="border-none shadow-xl my-1 bg-indigo-50">
+            <label class="basis-1/5">Naam</label><input type="text" name="naam" value="{{ old('naam') }}" required class="border-none focus:ring-0 shadow-xl my-1 bg-sky-50">
             </div>
             
             <!-- Geboortedatum -->
             <div class="flex flex-row items-center">
-            <label class="basis-1/5">Geboortedatum</label><input type="date" name="geboortedatum" value="{{ old('geboortedatum') }}" min="1922-01-01" max="2200-12-31" required class="border-none shadow-xl my-1 bg-indigo-50">
+            <label class="basis-1/5">Geboortedatum</label><input type="date" name="geboortedatum" value="{{ old('geboortedatum') }}" min="1922-01-01" max="2200-12-31" required class="border-none focus:ring-0 shadow-xl my-1 bg-sky-50">
             </div>			
             
             <div class="grid grid-cols-5">
             	<div class="col-start-2 col-end-3">
-            		<button type="submit" class="hover:text-indigo-500"><u>> Toevoegen</u></button>
+            		<button type="submit" class="hover:text-sky-500"><u>> Toevoegen</u></button>
             	</div>
             </div>
 
@@ -160,7 +160,7 @@
             @method('delete')
             <div><span>Profiel -</span>
             	<span class="text-sm" >
-            		<button type="submit" class="hover:text-indigo-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
+            		<button type="submit" class="hover:text-sky-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
             	</span>
             </div>
             </form>
@@ -174,7 +174,7 @@
                 <div class="flex flex-row items-center">
                 	<label class="basis-1/5">Naam</label>
                 	@can('update', $lid)
-                		<input type="text" name="naam" value="{{ $lid->naam }}" required class="border-none shadow-xl my-1 focus:bg-indigo-50">
+                		<input type="text" name="naam" value="{{ $lid->naam }}" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
                 	@else<span class="py-2 pl-3"> {{ $lid->naam }}</span>
 					@endcan
                 </div>
@@ -182,7 +182,7 @@
                 <div class="flex flex-row items-center">
                 <label class="basis-1/5">Geboortedatum</label>
                 @can('update', $lid)
-                	<input type="text" name="geboortedatum" value="{{ $lid->geboortedatum }}" placeholder="{{ $lid->geboortedatum }}" onfocusin="(this.type='date')" onfocusout="(this.type='text')" required class="border-none shadow-xl my-1 focus:bg-indigo-50 focus:py-0 focus:h-10 focus:border-0">
+                	<input type="text" name="geboortedatum" value="{{ $lid->geboortedatum }}" placeholder="{{ $lid->geboortedatum }}" onfocusin="(this.type='date')" onfocusout="(this.type='text')" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50 focus:py-0 focus:h-10 focus:border-0">
                 @else<span class="py-2 pl-3"> {{ $lid->geboortedatum }}</span>
 				@endcan
                 </div>
@@ -194,7 +194,7 @@
                 <div class="grid grid-cols-5">
                 	<div class="col-start-2 col-end-3">
                 		@can('update', $lid)
-                		<button type="submit" class="hover:text-indigo-500"><u>> Wijzig</u></button>
+                		<button type="submit" class="hover:text-sky-500"><u>> Wijzig</u></button>
                 		@endcan
                 	</div>
             	</div>

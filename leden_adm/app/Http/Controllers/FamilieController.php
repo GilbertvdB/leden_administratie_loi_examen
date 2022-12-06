@@ -44,9 +44,10 @@ class FamilieController extends Controller
             'adres' => 'required|string|max:255'
         ]);
     
-        $store = Familie::create($validatedData);
+        $new_familie = Familie::create($validatedData);
  
-        return view('/famedit', ['fam' => $store]);
+//         return view('famedit', ['fam' => $store]);
+        return redirect(route('familie.show', $new_familie->id));
     }
 
     /**

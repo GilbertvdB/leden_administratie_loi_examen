@@ -4,7 +4,7 @@
         	<h1 class="text-2xl">Contributies Familie {{ $familie_naam }}</h1>
         </div>
         <div class="text-lg">
-        	<a href="{{ route('familie.show', ['familie' => $familie_id]) }}" class="hover:text-indigo-500">Naar Profiel</a>
+        	<a href="{{ route('familie.show', ['familie' => $familie_id]) }}" class="hover:text-sky-500">Naar Profiel</a>
         </div>
         <br>
         <!-- Set default boekjaar -->
@@ -24,7 +24,7 @@
 		<!-- Boekjaar info tabel -->
 		<div>	
         @if($contributies_leden->isNotEmpty())
-        <table class="table-auto border-separate border-spacing-0 border border-indigo-200">
+        <table class="table-auto border-separate border-spacing-0 border border-sky-200">
             <thead class="text-left">  
                 <tr class="bg-zinc-100">
                   <th class="p-2 pr-6">Naam</th>
@@ -38,7 +38,7 @@
             </thead>
             <tbody>
             @foreach ($contributies_leden as $lid)
-              <tr class="hover:bg-indigo-50">
+              <tr class="hover:bg-sky-50">
                 <td class="p-2 pr-6">{{ $lid->naam }}</td>
                 <td>{{ $lid->geboortedatum }}</td>
                 <td>{{ $lid->leeftijd }}</td>
@@ -47,7 +47,7 @@
                 <td>{{ $lid->jaar }}</td>
                 @can('update', App\Models\Contributie::class)
                 	<td>@if($jaar == date("Y"))
-                		<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-indigo-50">
+                		<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-sky-50 active:bg-sky-100">
                         	{{ __('Wijzig') }}
                         </x-dropdown-link
                         >@endif
@@ -88,12 +88,12 @@
             </thead>
             <tbody>
             @foreach ($incompleet as $lid)
-              <tr class="hover:bg-indigo-50">
+              <tr class="hover:bg-sky-50">
                 <td class="p-2">{{ $lid->naam }}</td>
                 <td >{{ $lid->geboortedatum }}</td>
                 @can('update', App\Models\Contributie::class)
 				<td>
-                	<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-indigo-50">
+                	<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-sky-50">
                     	{{ __('Wijzig') }}
                     </x-dropdown-link>
             	</td>

@@ -1,6 +1,6 @@
 <x-leden-layout>
     <div class="max-w-4xl mx-auto p-2 border overflow-auto bg-white sm:p-6 lg:p-8">
-	<h1 class="text-lg">Contributie aanpassen</h1>
+	<h1 class="text-xl">Contributie aanpassen</h1>
 	<br>
 	
 	<div class="form max-w-xl" >
@@ -49,15 +49,15 @@
             <div class="mt-4">
                 <x-input-label for="soortlid" :value="__('Soortlid')" />
                 	<div class="block mt-1 w-full">
-					<input type="radio" id="jeugd" name="soortlid" value="Jeugd" > 
+					<input type="radio" id="jeugd" name="soortlid" value="Jeugd" class="text-sky-500 focus:ring-sky-500"> 
 					<label for="jeugd">Jeugd</label>
-					<input type="radio" id="aspirant" name="soortlid" value="Aspirant" class="ml-8" > 
+					<input type="radio" id="aspirant" name="soortlid" value="Aspirant" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 					<label for="aspirant">Aspirantr</label>
-					<input type="radio" id="junior" name="soortlid" value="Junior" class="ml-8" > 
+					<input type="radio" id="junior" name="soortlid" value="Junior" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 					<label for="junior">Junior</label>
-					<input type="radio" id="senior" name="soortlid" value="Senior" class="ml-8" > 
+					<input type="radio" id="senior" name="soortlid" value="Senior" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 					<label for="senior">Senior</label>
-					<input type="radio" id="oudere" name="soortlid" value="Oudere" class="ml-8" > 
+					<input type="radio" id="oudere" name="soortlid" value="Oudere" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 					<label for="oudere">Oudere</label>
 					</div>
                 <x-input-error :messages="$errors->get('soorlid')" class="mt-2" />

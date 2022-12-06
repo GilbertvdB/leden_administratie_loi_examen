@@ -29,15 +29,15 @@
         <div class="mt-4">
             <x-input-label for="rol" :value="__('Rol')" />
             	<div class="block mt-1 w-full">
-				<input type="radio" id="admin" name="rol_id" value="1" > 
+				<input type="radio" id="admin" name="rol_id" value="1" class="text-sky-500 focus:ring-sky-500"> 
 				<label for="admin">Admin</label>
-				<input type="radio" id="voorzitter" name="rol_id" value="2" class="ml-8" > 
+				<input type="radio" id="voorzitter" name="rol_id" value="2" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 				<label for="voorzitter">Voorzitter</label>
-				<input type="radio" id="secretaris" name="rol_id" value="3" class="ml-8" > 
+				<input type="radio" id="secretaris" name="rol_id" value="3" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 				<label for="secretaris">Secretaris</label>
-				<input type="radio" id="penningmeester" name="rol_id" value="4" class="ml-8" > 
+				<input type="radio" id="penningmeester" name="rol_id" value="4" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 				<label for="penningmeester">Penningmeester</label>
-				<input type="radio" id="algemeen" name="rol_id" value="5" class="ml-8" > 
+				<input type="radio" id="algemeen" name="rol_id" value="5" class="ml-8 text-sky-500 focus:ring-sky-500" > 
 				<label for="algemeen">Algemeen</label>
 				</div>
             <x-input-error :messages="$errors->get('rol_id')" class="mt-2" />

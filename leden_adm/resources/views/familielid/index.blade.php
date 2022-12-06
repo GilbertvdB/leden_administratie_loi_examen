@@ -1,6 +1,6 @@
 <x-leden-layout>
     <div class="max-w-4xl mx-auto p-2 bg-white overflow-hidden border-t-[1px] border-gray-200 drop-shadow">
-    	<div class="border-indigo-200 p-2">
+    	<div class="border-sky-200 p-2">
         	<!-- Title -->
     		<h1 class="font-bold leading-5 text-2xl">Leden </h1>
     		<h2 class="mt-1 text-Gray-600 text-xl">Jaar 2022</h2>
@@ -9,14 +9,14 @@
  		<!--  Search Bar -->
  		<div class="mb-1 grid grid-cols-6 gap-4">
         	<div class="col-end-7 col-span-2 place-self-end">
-            	<div class="border border-indigo-200 w-fit flex flex-row h-10 rounded-3xl">
+            	<div class="border border-sky-200 w-fit flex flex-row h-10 rounded-3xl">
                 	<div>
                         <form id="searchbar" action="{{ route('zoek_lid' )}}" method="POST">
                             @csrf
-                            <input type="search" class="text-sm mt-1 h-8 border-none outline-red rounded-3xl" name="search" placeholder="Zoek..." value="{{ request('search') }}">
+                            <input type="search" class="text-sm mt-1 h-8 border-none focus:ring-0 rounded-3xl" name="search" placeholder="Zoek..." value="{{ request('search') }}">
                     	</form>
                 	</div>
-                	<div class="bg-indigo-300 ml-2 p-2 hover:bg-indigo-400 active:bg-indigo-500 cursor-pointer rounded-full">
+                	<div class="bg-sky-200 ml-2 p-2 hover:bg-sky-500 active:bg-sky-600 cursor-pointer rounded-full">
                     	 <button type="submit" form="searchbar">
                     	 <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
@@ -28,9 +28,9 @@
  		
  		
  		<!-- Leden info tabel -->
-		<div class="border border-indigo-200 rounded">
+		<div class="border border-sky-200 rounded">
         <table class="min-w-full">
-          <thead class="border-b border-indigo-200 text-left">
+          <thead class="border-b border-sky-200 text-left">
           <tr class="bg-zinc-100">
             <th class="p-2">Naam</th>
             <th>Geboortedatum</th>
@@ -42,7 +42,7 @@
           <tbody>
           @foreach ($leden as $lid)
           
-          <tr class=" border-b border-indigo-200 last:border-0 hover:bg-indigo-100">
+          <tr class=" border-b border-sky-200 last:border-0 hover:bg-sky-100">
             <td class="p-2">{{ $lid->naam }}</td>
             <td>{{ $lid->geboortedatum }}</td>
             <td>@if($lid->lidContributie)
@@ -59,10 +59,10 @@
                     </button>
                 </x-slot>
                 <x-slot name="content">
-                    <x-dropdown-link :href="route('familie.show', $lid->familie_id )" class="hover:text-indigo-600">
+                    <x-dropdown-link :href="route('familie.show', $lid->familie_id )" class="hover:text-sky-500">
                         {{ __('Profiel') }}
                     </x-dropdown-link>
-					<x-dropdown-link :href="route('contributie.show', $lid->familie_id )" class="hover:text-indigo-600">
+					<x-dropdown-link :href="route('contributie.show', $lid->familie_id )" class="hover:text-sky-500">
                         {{ __('Contributie') }}
                     </x-dropdown-link>
                 </x-slot>

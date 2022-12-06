@@ -26,14 +26,7 @@ use App\Http\Controllers\Famdisplay;
 |
 */
 
-
-// Route::get('/gfg', [GFGController::class, 'article']);
-
-
 Route::get('/helo', [GFGController::class, 'isPenny']);
-
-// Route::get('/panel', [GFGController::class, 'roles'])
-// ->middleware(['auth', 'verified'])->name('panel');
 
 
 Route::get('/', function () {
@@ -65,6 +58,7 @@ Route::get('/contributie.staffels', function () {
     return view('contributie.staffels');
 })
 ->middleware(['auth', 'verified'])->name('staffels');
+
 // routes for table resource models
 // Route::resource('familie', FamilieController::class)
 // ->middleware(['auth', 'verified']);

@@ -1,8 +1,8 @@
 <div class="class="max-w-2xl mx-auto">
     	<div class="w-44 h-screen border bg-white float-left text-lg">
  		<ul>
- 		<li><a href="{{ route('ledendash') }}" class="block hover:bg-indigo-100 py-1 pl-2" >Dashboard</a></li>
- 		<li><details><summary class="cursor-pointer list-none hover:bg-indigo-100 flex item-center py-1 pl-2">
+ 		<li><a href="{{ route('ledendash') }}" class="block hover:text-sky-500 py-1 pl-2" >Dashboard</a></li>
+ 		<li><details><summary class="cursor-pointer list-none hover:text-sky-500 flex item-center py-1 pl-2">
  		<div>Families</div>
  		<div class="ml-1">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -12,20 +12,20 @@
  		</summary>
  			<ul>
  				@can('create', App\Models\Familie::class)
- 				<li><a href="{{ route('familie.create') }}" class="block hover:bg-indigo-100 py-1 pl-6" >Toevoegen</a></li>
+ 				<li><a href="{{ route('familie.create') }}" class="block hover:text-sky-500 hover:bg-gray-100 py-1 pl-6" >Toevoegen</a></li>
  				@endcan
- 				<li><a href="{{ route('ledendash') }}" class="block hover:bg-indigo-100 py-1 pl-6 active:bg-gray-200" >Zoeken</a></li>
+ 				<li><a href="{{ route('ledendash') }}" class="block hover:text-sky-500 hover:bg-gray-100 py-1 pl-6 active:bg-gray-200" >Zoeken</a></li>
  			</ul>
  			</li></details
- 		<li><a href="{{ route('familielid.index') }}" class="block hover:bg-indigo-100 py-1 pl-2" >Leden</a></li>
-  		<li><a href="#" class="block hover:bg-indigo-100 py-1 pl-2">Contributies</a></li>
-  		<li><a href="{{ route('staffels') }}" class="block hover:bg-indigo-100 py-1 pl-2">Staffels</a></li>
+ 		<li><a href="{{ route('familielid.index') }}" class="block hover:text-sky-500 py-1 pl-2" >Leden</a></li>
+  		<li><a href="#" class="block hover:text-sky-500 py-1 pl-2">Contributies</a></li>
+  		<li><a href="{{ route('staffels') }}" class="block hover:text-sky-500 py-1 pl-2">Staffels</a></li>
   		<li>@can('update', App\Models\User::class)
-			<a href="{{ route('admin.index') }}" class="block hover:bg-indigo-100 py-1 pl-2">Authenticatie</a>
+			<a href="{{ route('admin.index') }}" class="block hover:text-sky-500 py-1 pl-2">Authenticatie</a>
 			@endcan</li>
   		</ul>
   		@can('update', App\Models\User::class)
-  		<details><summary class="cursor-pointer list-none hover:bg-indigo-100 flex item-center py-1 pl-2">
+  		<details><summary class="cursor-pointer list-none hover:text-sky-500  flex item-center py-1 pl-2">
   		<div>Admin</div>
  		<div class="ml-1">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

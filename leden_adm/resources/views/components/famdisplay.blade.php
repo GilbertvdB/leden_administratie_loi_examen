@@ -10,7 +10,7 @@
     	<div class="col-start-1 col-end-3 place-self-start">
 			@can('create', App\Models\Familie::class)
 			<a href="{{ route('familie.create') }}" 
-				class="block inline-flex items-center px-4 py-2 mt-2 bg-indigo-300 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-400 active:bg-indigo-500">
+				class="block inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-600 active:bg-sky-700">
 		  {{ __('+ Familie Toevoegen') }}
 		  </a>
 		  @endcan
@@ -18,14 +18,14 @@
 	
     	<!--  Search Bar -->
     	<div class="col-end-7 col-span-2 place-self-end">
-        	<div class="border border-indigo-200 w-fit flex flex-row h-10 rounded-3xl">
+        	<div class="border border-sky-200 w-fit flex flex-row h-10 rounded-3xl">
             	<div>
                     <form id="searchbar" action="{{ route('ledendash')}}" method="POST">
                         @csrf
-                        <input type="search" class="text-sm mt-1 h-8 border-none outline-red rounded-3xl" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
+                        <input type="search" class="text-sm mt-1 h-8 border-none focus:ring-0 outline-red rounded-3xl" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
                 	</form>
             	</div>
-            	<div class="bg-indigo-300 ml-2 p-2 hover:bg-indigo-400 active:bg-indigo-500 cursor-pointer rounded-full">
+            	<div class="bg-sky-200 ml-2 p-2 hover:bg-sky-500 active:bg-sky-600 cursor-pointer rounded-full">
                 	 <button type="submit" form="searchbar">
                 	 <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
@@ -36,7 +36,7 @@
 	</div>
 	
 	<!-- Display fam info table -->
-	<div class="border border-indigo-200">
+	<div class="border border-sky-200">
 @foreach($info as $familie)
 
 	<!-- Bereken totaal familie contributie -->
@@ -61,26 +61,32 @@
 		@php($notComplete = True)
 	@endif
 		
-	<details class="border-b-[1px] border-indigo-200 open:shadow-[-3px_-1px_0_0_rgba(199,210,254,1)]">
-	<summary class="bg-white relative cursor-pointer py-2 px-2 list-none hover:bg-indigo-100">
-	<span class="font-bold text-lg">{{ $familie->naam }}</span>@if($notComplete)
-    					<span class="pl-2 text-xs text-red-800">Incompleet</span>
-    					@endif<span class="ml-auto font-bold float-right focus:outline-none">&euro;{{ $sum }}</span>
-    					</summary>
+	<details class="border-b-[1px] border-sky-200 last:border-b-0 open:shadow-[-3px_-1px_0_0_rgba(14,165,233,1)]">
+	<summary class="bg-white relative cursor-pointer py-2 px-2 list-none hover:bg-sky-100">
+		<span class="font-bold text-lg">{{ $familie->naam }}</span>
+		@if($notComplete)
+		<span class="pl-2 text-xs text-red-800">Incompleet</span>
+		@endif
+		<span class="ml-auto font-bold float-right focus:outline-none">&euro;{{ $sum }}</span>
+	</summary>
 		<div class="mb-2"><span class="pl-2 text-sm">
-			<a href="{{ route('familie.show', ['familie' => $familie->id]) }}" class="hover:border-b hover:border-indigo-300">Naar Profiel</a> | 
-      		<a href="{{ route('contributie.show', ['contributie' => $familie->id]) }}" class="hover:border-b hover:border-indigo-300">Contributies</a>
-      		</span></div>
+			<a href="{{ route('familie.show', ['familie' => $familie->id]) }}" class="hover:border-b hover:border-sky-500">
+				Naar Profiel</a> | 
+      		<a href="{{ route('contributie.show', ['contributie' => $familie->id]) }}" class="hover:border-b hover:border-sky-500">
+      			Contributies</a>
+      		</span>
+      	</div>
 		<div>
 			<div>
 				<span class="pl-2">Adres: {{ $familie->adres }}</span>
 			</div>
 		@foreach( $familie->familieLeden as $lid)
 			<div class="flex flex-row pl-2">
-				<div class="basis-2/5">{{ $lid->naam }}@unless ($lid->naam and $lid->geboortedatum and $lid->soortlid and $lid->LidContributie->bedrag)
+				<div class="basis-2/5"><span>{{ $lid->naam }}</span>
+					@unless ($lid->naam and $lid->geboortedatum and $lid->soortlid and $lid->LidContributie->bedrag)
     					<span class="pl-2 text-xs text-red-800">Incompleet</span>
-    					@endunless</div>
-				<div class="basis-1/5">{{ $lid->soortlid }}</div>
+    				@endunless</div>
+				<div class="basis-1/5"><span>{{ $lid->soortlid }}</span></div>
 			</div>
 			
 		@endforeach
@@ -89,8 +95,8 @@
 @endforeach
 </div>
 
-<div class="mt-1">
-	{{ $info->links() }}
+	<div class="mt-1">
+		{{ $info->links() }}
 	</div>
 
 </div>	
