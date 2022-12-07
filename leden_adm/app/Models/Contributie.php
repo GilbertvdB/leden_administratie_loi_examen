@@ -21,7 +21,7 @@ class Contributie extends Model
      */
     public function boekjaar()
     {
-        return $this->belongsTo(Boekjaar::class);
+        return $this->hasOne(Boekjaar::class);
     }
     
     /**
@@ -29,13 +29,13 @@ class Contributie extends Model
      */
     public function soortleden()
     {
-        return $this->hasMany(Soortlid::class, 'id');
+        return $this->hasMany(Soortlid::class, 'familielid_id','familielid_id');
     }
 /**
      * Linking contributie and familielid tables/models.
      */
     public function lidContributie()
     {
-        return $this->hasMany(Familielid::class, 'id');
+        return $this->belongsTo(Familielid::class, 'familielid_id');
     }
 }

@@ -44,6 +44,7 @@
                     </form>
                 </x-slot>
             </x-dropdown>
+            </td>
           </tr>
           @endforeach
           </tbody>

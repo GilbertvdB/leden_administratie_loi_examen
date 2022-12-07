@@ -14,7 +14,7 @@ class SoortlidController extends Controller
      * @param  \App\Models\Familielid  $familielid
      * @return \Illuminate\Http\Response
      */
-    public function add(Familielid $familielid)
+    public function add($familielid)
     {   
         $this->authorize('create', Soortlid::class);
         

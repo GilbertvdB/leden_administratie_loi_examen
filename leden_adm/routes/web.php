@@ -30,7 +30,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-// route for official app
 Route::get('/leden', function() {
     return redirect(route('familie.index'));
 })->middleware(['auth', 'verified'])->name('ledendash');
@@ -49,7 +48,7 @@ Route::get('/contributie.staffels', function () {
 })
 ->middleware(['auth', 'verified'])->name('staffels');
 
-
+//route for tables
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('familie', FamilieController::class);
     Route::resource('familielid', FamilielidController::class)->only(['index', 'store', 'update', 'destroy']);

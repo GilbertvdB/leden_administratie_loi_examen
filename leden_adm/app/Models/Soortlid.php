@@ -29,6 +29,6 @@ class Soortlid extends Model
      */
     public function contributies()
     {
-        return $this->belongsTo(Contributie::class, 'id');
+        return $this->belongsTo(Contributie::class, 'familielid_id');
     }
 }

@@ -21,6 +21,6 @@ class Boekjaar extends Model
      */
     public function contributies()
     {
-        return $this->hasMany(Contributie::class);
+        return $this->belongsTo(Contributie::class);
     }
 }

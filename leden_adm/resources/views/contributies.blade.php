@@ -34,7 +34,7 @@
                   <th class="pr-6">Soortlid</th>
                   <th class="pr-6">Bedrag</th>
                   <th class="pr-6">Boekjaar</th>
-                  <th></th>
+                  <th class="pr-6">Acties</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,10 +48,28 @@
                 <td>{{ $lid->jaar }}</td>
                 @can('update', App\Models\Contributie::class)
                 	<td>@if($jaar == date("Y"))
-                		<x-dropdown-link :href="route('contributie.edit', $lid->lid_id)" class="hover:bg-sky-50 hover:text-sky-500 active:bg-sky-100">
-                        	{{ __('Wijzig') }}
-                        </x-dropdown-link
-                        >@endif
+                        <x-dropdown>
+                            <x-slot name="trigger">
+                                <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('contributie.edit', $lid->lid_id )" class="hover:text-sky-500">
+                                    {{ __('Wijzig') }}
+                                </x-dropdown-link>
+                                <form method="POST" action="{{ route('contributie.destroy', $lid->id) }}">
+                                    @csrf
+                                    @method('delete')
+            
+            					<button class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white hover:text-sky-500 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">
+            						Verwijderen</button>
+                                </form>
+                            </x-slot>
+                        </x-dropdown>
+                        @endif
                     </td>
                	@endcan
               </tr>

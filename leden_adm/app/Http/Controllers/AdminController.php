@@ -32,7 +32,7 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  User Id string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -47,15 +47,15 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  User Id string  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user)
+    public function update(Request $request, $id)
     {   
         $this->authorize('update', User::class);
         $rol = $request->get('rol_id');
         
-        $update = User::find($user);
+        $update = User::find($id);
         $update->role_id = $rol;
         $update->save();
         
@@ -65,14 +65,14 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  User ID user $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($user) // removed type User
+    public function destroy($id)
     {
-        
-        $test = User::find($user);
-        $test->delete();
+        $this->authorize('delete', User::class);
+        $user = User::find($id);
+        $user->delete();
         
         return redirect(route('admin.index'));
     }

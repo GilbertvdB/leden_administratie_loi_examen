@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contributie;
 use App\Models\Familielid;
+use App\Models\Soortlid;
 use App\Models\Boekjaar;
 use Illuminate\Http\Request;
 
@@ -145,12 +146,33 @@ class ContributieController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Contributie  $contributie
+     * @param  Contributie Id string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contributie $contributie)
+    public function destroy($id)
     {
-        //
+        $this->authorize('delete', Contributie::class);
+        
+        $d = 30;
+        $gegevens = Contributie::find($id);
+        
+        //delete boekjaar record
+        $boekjaar = Boekjaar::find($gegevens->boekjaar->id);
+        $boekjaar->delete();
+        
+        //delete soortlid record
+        $soortlid = Soortlid::find($gegevens->soortleden[0]->id);
+        $soortlid->delete();
+        
+        //set familielied soortlid column to null
+        $gegevens->lidContributie->soortlid = null;
+        $gegevens->push();
+        //delete contribution record
+        $gegevens->delete();
+        
+        
+//         return view('components.helo')->with('info', $gegevens); 
+        return back();
     }
 
     /**

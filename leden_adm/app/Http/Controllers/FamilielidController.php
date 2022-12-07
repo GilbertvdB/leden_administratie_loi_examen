@@ -19,17 +19,6 @@ class FamilielidController extends Controller
         
         return view('familielid.index')->with(['leden' => $leden]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //familielid create/edit/update forms is handled by 'famedit' & FamilieController
-        return redirect(route('familielid.index'));
-    }
     
     /**
      * Store a newly created resource in storage.
@@ -55,18 +44,6 @@ class FamilielidController extends Controller
         $new_lid = Familielid::create($validatedData);
         
         return redirect(route('familie.show', ['familie' => $new_lid->familie_id]));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Familielid  $familielid
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Familielid $familielid)
-    {
-        //familielid create/edit/update forms is handled by 'famedit' & FamilieController
-        return redirect(route('familielid.index'));
     }
 
     /**
