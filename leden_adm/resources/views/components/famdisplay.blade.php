@@ -20,7 +20,7 @@
     	<div class="col-end-7 col-span-2 place-self-end">
         	<div class="border border-sky-200 w-fit flex flex-row h-10 rounded-3xl">
             	<div>
-                    <form id="searchbar" action="{{ route('ledendash')}}" method="POST">
+                    <form id="searchbar" action="{{ route('zoek_familie')}}" method="POST">
                         @csrf
                         <input type="search" class="text-sm mt-1 h-8 border-none focus:ring-0 outline-red rounded-3xl" name="search" placeholder="Zoek familie..." value="{{ request('search') }}">
                 	</form>

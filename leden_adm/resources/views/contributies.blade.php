@@ -7,6 +7,7 @@
         	<a href="{{ route('familie.show', ['familie' => $familie_id]) }}" class="hover:text-sky-500">Naar Profiel</a>
         </div>
         <br>
+                
         <!-- Set default boekjaar -->
         @php($jaar = session('jaar'))
        	@empty($jaar)
@@ -47,7 +48,7 @@
                 <td>{{ $lid->jaar }}</td>
                 @can('update', App\Models\Contributie::class)
                 	<td>@if($jaar == date("Y"))
-                		<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-sky-50 active:bg-sky-100">
+                		<x-dropdown-link :href="route('contributie.edit', $lid->lid_id)" class="hover:bg-sky-50 hover:text-sky-500 active:bg-sky-100">
                         	{{ __('Wijzig') }}
                         </x-dropdown-link
                         >@endif
@@ -62,7 +63,7 @@
         <!-- Staffels info box -->
     	<div class="w-2/5">
         	<br>
-        	<details><summary class="list-none cursor-pointer">Staffels</summary>
+        	<details><summary class="cursor-pointer hover:text-sky-500">Staffels</summary>
         	<x-staffels-info class="text-sm"/>
         	</details>
     	</div>
@@ -93,7 +94,7 @@
                 <td >{{ $lid->geboortedatum }}</td>
                 @can('update', App\Models\Contributie::class)
 				<td>
-                	<x-dropdown-link :href="route('contributie.edit', $lid->l_id)" class="hover:bg-sky-50">
+                	<x-dropdown-link :href="route('contributie.edit', $lid->lid_id)" class="hover:bg-sky-50">
                     	{{ __('Wijzig') }}
                     </x-dropdown-link>
             	</td>

@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Familielid;
-use App\Models\Soortlid;
 use Illuminate\Http\Request;
-
-// TEST
-use App\Http\Controllers\SoortlidController;
-use App\Http\Controllers\ContributieController;
 
 class FamilielidController extends Controller
 {
@@ -22,8 +17,7 @@ class FamilielidController extends Controller
         $search = '';
         $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
         
-        return view('familielid.index')
-        ->with(['leden' => $leden]);
+        return view('familielid.index')->with(['leden' => $leden]);
     }
 
     /**
@@ -33,22 +27,10 @@ class FamilielidController extends Controller
      */
     public function create()
     {
-        return view('familielid.create');
+        //familielid create/edit/update forms is handled by 'famedit' & FamilieController
+        return redirect(route('familielid.index'));
     }
     
-    // EXTRA METHODS
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function date_format($datum)
-    {
-        //convert y-m-d to d-m-y
-        $new_format = date("d-m-Y", strtotime($datum));
-        return $new_format;
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -70,29 +52,9 @@ class FamilielidController extends Controller
         $geb_datum = $request->get('geboortedatum');
         $validatedData['geboortedatum'] = $this->date_format($geb_datum);
         
-        $lid = Familielid::create($validatedData);
+        $new_lid = Familielid::create($validatedData);
         
-        return redirect(route('familie.show', ['familie' => $lid->familie_id]));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Familielid  $familielid
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $search = $request->get('search');
-        
-        if(empty($search)) {
-            return redirect(route('familielid.index'));
-        }
-        else {
-            $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
-            return view('familielid.index')
-            ->with(['leden' => $leden]);
-        }
+        return redirect(route('familie.show', ['familie' => $new_lid->familie_id]));
     }
 
     /**
@@ -103,7 +65,8 @@ class FamilielidController extends Controller
      */
     public function edit(Familielid $familielid)
     {
-        //
+        //familielid create/edit/update forms is handled by 'famedit' & FamilieController
+        return redirect(route('familielid.index'));
     }
 
     /**
@@ -123,58 +86,16 @@ class FamilielidController extends Controller
             'soortlid' => 'nullable|string'
         ]);
         
-        $new_geboortedatum = $request->get('geboortedatum');
         //convert y-m-d to d-m-y
+        $new_geboortedatum = $request->get('geboortedatum');
         $new_geboortedatum = $this->date_format($new_geboortedatum);
         
         $validatedData['geboortedatum'] = $new_geboortedatum;
         $familielid->update($validatedData);
         $familielid->refresh();
         
-//         $test = $familielid->lidContributie;
-        
-        //update leeftijd
-        if ($familielid->lidContributie) {
-            $leeftijd = date("Y")-substr($familielid->geboortedatum,6,4);
-            $familielid->lidContributie->leeftijd = $leeftijd;
-            $familielid->push();
-        }
-        
-        //TODO - BUG - fixen werk niet meer.
-//         if ($geboortedatum !== $new_geboortedatum) {
-//             //pass leeftijd aan in contributietabel voor dit familielid
-//             $contributie_leeftijd = new ContributieController();
-//             $new_leeftijd = $contributie_leeftijd->bereken_leeftijd($new_geboortedatum);
-//             $familielid->soortleden->contributies->leeftijd = $new_leeftijd;
-//             $familielid->push();
-//         }
-       
-        
-        //og
-//         $fam_id = $familielid->familie_id;
-//         $geboortedatum = $familielid->geboortedatum;
-//         $new_geboortedatum = $request->get('geboortedatum');
-        
-//         $familielid->naam = $request->get('naam');
-        
-//         if ($geboortedatum !== $new_geboortedatum) {
-//             $familielid->geboortedatum = $new_geboortedatum;   
-//             // update leeftijd in contributie table
-//             // leeftijd berekenen TODO add bereken leeftijd in contributie controller or pass new geboortejaar to contrib controller for process
-// //             $lid_jaar = substr($new_geboortedatum,6,4);
-// //             $jaar = date("Y");
-// //             $new_leeftijd = $jaar - $lid_jaar;
-//             $contributie_leeftijd = new ContributieController();
-//             $new_leeftijd = $contributie_leeftijd->bereken_leeftijd($new_geboortedatum);
-//             $familielid->soortleden->contributies->leeftijd = $new_leeftijd;
-//             $familielid->push();
-//         }
-        
-//         $familielid->save();
-//         $familielid->refresh();
-        
-        return redirect(route('familie.show', ['familie' => $familielid->familie_id]));
-//            return view('components.helo', ['test' => $test]);
+//         return redirect(route('familie.show', ['familie' => $familielid->familie_id]));
+        return back();
     }
 
     /**
@@ -187,11 +108,39 @@ class FamilielidController extends Controller
     {   
         $this->authorize('delete', $familielid);
         
-        $fam_id = $familielid->familie_id;
         $familielid->delete();
 
-        return redirect(route('familie.show', ['familie' => $fam_id]));      
-
+        return back(); 
+    }
+    
+    /**
+     * Search the specified resource in storage
+     * and return the result.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function search(Request $request)
+    {
+        $search = $request->get('search');
         
+        if(empty($search)) {
+            return back();
+        }
+        else {
+            $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
+            return view('familielid.index')->with(['leden' => $leden]);
+        }
+    }
+    
+    /**
+     * Convert date format from y-m-d to d-m-y.
+     * @param  date  $datum
+     * @return date in new format
+     */
+    protected function date_format($datum)
+    {
+        $new_format = date("d-m-Y", strtotime($datum));
+        return $new_format;
     }
 }

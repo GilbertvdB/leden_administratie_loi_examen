@@ -12,18 +12,7 @@ use App\Http\Controllers\SoortlidController;
 use Illuminate\Support\Facades\DB;
 
 class ContributieController extends Controller
-{
-    public $jaar;
-
-    public function update_boekjaar(Request $request)
-    {
-        $jaar = $request->get('jaar');
-        $this->jaar = $jaar;
-        
-        return back()->with('jaar', $jaar);
-    }
-
-        
+{   
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +20,7 @@ class ContributieController extends Controller
      */
     public function index()
     {
-      //
+        //
     }
 
     /**
@@ -41,22 +30,205 @@ class ContributieController extends Controller
      */
     public function create()
     {
-        return view('contributie.create');
+        //
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display a listing of the specified resource.
+     *
+     * @param  Familie Id string  $familie_id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($familie_id)
+    {   
+        //joining familie, familielid, contributie & boekjaar table.
+        $familieLeden = DB::table('families')
+        ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
+        ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
+        ->leftjoin('boekjaars', 'boekjaars.contributie_id', '=', 'contributies.id')
+        ->select('families.naam as familie','familielids.id as lid_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag', 'boekjaars.jaar')
+        ->where('families.id', $familie_id)
+        ->get();
+        
+        $famNaam = $familieLeden->pluck('familie');
+        $incompleet_profiel = $familieLeden->where('jaar', '');
+        
+        // boekjaar year record choices
+        $bk = Boekjaar::all();
+        $info = $bk->pluck('jaar')->unique()->values();
+        
+        return view('contributies')
+        ->with('jaren_info', $info) //for boekjaar selection
+        ->with('fam_leden', $familieLeden)
+        ->with('incompleet', $incompleet_profiel)
+        ->with('familie_id', $familie_id)
+        ->with('familie_naam', $famNaam[0]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Familielid Id string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $this->authorize('update', Contributie::class);
+        $lid = Familielid::find($id);
+        
+        //incomplete profile check
+        if ($lid->lidContributie) {
+            $contrib = $lid->lidContributie;
+        }
+        else {$contrib = "";} // no contribution records yet created
+        
+        return view('contributie.edit')
+        ->with(['lid' => $lid])
+        ->with(['contributie' => $contrib]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Familielid Id string  $id
+     * @return \Illuminate\Http\Response
+     */    
+    public function update(Request $request, $id)
+    {
+        $this->authorize('update', Contributie::class);
+        
+        $validatedData = $request->validate([
+            'soortlid' => 'required|string',
+            'bedrag' => 'required_with:id|integer'
+        ]);
+        
+        $new_soortlid = $request->get('soortlid');
+        $lid = Familielid::find($id);
+        $lid_contributie = $lid->lidContributie; //fetch records
+        
+        // update existing records
+        if ($lid->soortlid) {
+            $lid_contributie->update($validatedData);
+            
+            // update soortlid in familielids and soortlids tabel
+            $lid->soortlid = $new_soortlid;
+            $lid->soortleden->omschrijving = $new_soortlid;
+            $lid->push();
+        }
+        // create if no contribution records exist yet
+        else {
+            $lid->soortlid = $new_soortlid;
+            $lid->save();
+            $lid->refresh();
+            
+            // autocreate table entries in contributies and soortlids
+            $this->add($lid);
+            $soort = new SoortlidController();
+            $soort->add($lid);
+        }
+        
+        return redirect(route('contributie.show', $lid->familie_id));
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Contributie  $contributie
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Contributie $contributie)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Models\Familielid  $familielid
+     * @return \Illuminate\Http\Response
+     */
+    public function add(Familielid $familielid)
+    {   
+        $this->authorize('create', Contributie::class);
+        
+        $lid = $familielid;
+        
+        // calculations
+        $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);
+        
+        $bedrag = $this->bereken_bedrag($this->bepaal_soortlid($leeftijd));
+        
+        //create table
+        $contributie = Contributie::create([
+            'familielid_id' => $lid->id,
+            'soortlid' => $lid->soortlid,
+            'leeftijd' => $leeftijd,
+            'bedrag' => $bedrag
+    ]);
+    
+    // add new contribution to boekjaar table.
+    $boekjaar = new BoekjaarController();
+    $boekjaar->add($contributie);
+    
     }
     
     
-    public function bereken_leeftijd($geboortedatum)
+    /**
+     * Update user chosen date
+     * and returns the result.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function update_boekjaar(Request $request)
+    {   
+        $validated = $request->validate([
+            'jaar' => 'required|string',
+        ]);
+        
+        $jaar = $request->get('jaar');
+        
+        return back()->with('jaar', $jaar);
+    }
+    
+    /**
+     * Calculates max age and
+     * returns result.
+     * 
+     * @param  Birthyear string $geboortedatum
+     * @return Age string $leeftijd
+     */
+    protected function bereken_leeftijd($geboortedatum)
     {
         $lid_jaar = substr($geboortedatum,6,4);
-        $jaar = date("Y");
+        $jaar = date("Y"); //current year
         $leeftijd = $jaar - $lid_jaar;
         
         return $leeftijd;
     }
     
-    public function bepaal_soortlid($leeftijd)
+    
+    /**
+     * Assigns a membership based 
+     * on the age and returns the result.
+     *
+     * @param  Age string $leeftijd
+     * @return Membership string $soortlid
+     */
+    protected function bepaal_soortlid($leeftijd)
     {
-        
         switch ($leeftijd) {
             case ($leeftijd < 8):
                 $soortlid = 'Jeugd';
@@ -78,9 +250,16 @@ class ContributieController extends Controller
         return $soortlid;
     }
     
-    public function bereken_bedrag($soortlid)
+    /**
+     * Calculates the contribution based on the
+     * type of membership and return the result.
+     *
+     * @param  Membership string $soortlid
+     * @return Contribution string $bedrag
+     */
+    protected function bereken_bedrag($soortlid)
     {
-        // contributie bedrag
+        // contributie ammount
         $basis_contributie = 100;
         
         switch ($soortlid) {
@@ -104,170 +283,5 @@ class ContributieController extends Controller
         $bedrag = $basis_contributie - ($basis_contributie * $korting);
         
         return $bedrag;
-    }
-    
-    /** TEST METHOD
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function add($collection)
-    {   $this->authorize('create', Contributie::class);
-        
-        $lid = $collection;
-        
-    // Berekeningen
-    $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);
-    
-    $bedrag = $this->bereken_bedrag($this->bepaal_soortlid($leeftijd));
-    
-    //create table
-    $contributie = Contributie::create([
-        'familielid_id' => $lid->id,
-        'soortlid' => $lid->soortlid,
-        'leeftijd' => $leeftijd,
-        'bedrag' => $bedrag
-    ]);
-    
-    //TEST!! TODO - WORKS!!
-    //request test - sending data to other controller for process
-    // add controller to the list & call controller function
-    $boekjaar = new BoekjaarController();
-    $boekjaar->add($contributie);
-    
-    }
-    
-    
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $store = Contributie::create([
-	'familielid_id' => $request->get('familielid_id'),
-            'soortlid' => $request->get('soortlid'),
-            'leeftijd' => $request->get('leeftijd'),
-            'bedrag' => $request->get('bedrag')
-        ]);
-        
-        return redirect('/leden');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contributie  $contributie
-     * @return \Illuminate\Http\Response
-     */
-    public function show($fam_id)
-    {
-        $familieLeden = DB::table('families')
-        ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
-        ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
-        ->leftjoin('boekjaars', 'boekjaars.contributie_id', '=', 'contributies.id')
-        ->select('families.naam as familie','familielids.id as l_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag', 'boekjaars.jaar')
-        ->where('families.id', $fam_id)
-//         ->where([['families.id', $fam_id], ['boekjaars.jaar', $jaar]])
-        ->get();
-        
-        $famNaam = $familieLeden->pluck('familie');
-        $incompleet_profiel = $familieLeden->where('jaar', '');
-        
-        // verschillende jaren data
-        $bk = Boekjaar::all();
-        $info = $bk->pluck('jaar')->unique()->values();
-        
-        return view('contributies')
-        ->with('jaren_info', $info) //voor boekjaar selectie
-        ->with('fam_leden', $familieLeden)
-        ->with('incompleet', $incompleet_profiel)
-        ->with('familie_id', $fam_id)
-        ->with('familie_naam', $famNaam[0]);
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Contributie  $contributie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $this->authorize('update', Contributie::class);
-        $lid = Familielid::find($id);
-        //incompleet profiel
-        if ($lid->lidContributie) {
-            $contrib = $lid->lidContributie;
-        }
-        else {$contrib = "";}
-        
-        return view('contributie.edit')
-        ->with(['lid' => $lid])
-        ->with(['contributie' => $contrib]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Contributie  $contributie
-     * @return \Illuminate\Http\Response
-     */    
-    public function update(Request $request, $id)
-    {
-        $this->authorize('update', Contributie::class);
-        
-        $validatedData = $request->validate([
-            'soortlid' => 'required|string',
-            'bedrag' => 'required_with:id|integer'
-        ]);
-        
-        $new_soortlid = $request->get('soortlid');
-        $lid = Familielid::find($id);
-        $lid_contributie = $lid->lidContributie;
-        
-        if ($lid->soortlid) {
-            $lid_contributie->update($validatedData);
-            
-            // update soortlid in familielid en soortlids tabel
-            $lid->soortlid = $new_soortlid;
-            $lid->soortleden->omschrijving = $new_soortlid;
-            
-            $lid->push();
-        }
-        // indien leeg create entry - TODO simplefy
-        else {
-            $lid->soortlid = $new_soortlid;
-            $lid->save();
-            $lid->refresh();
-            // autocreate table entries contributies and soortlid
-            $this->add($lid);
-            $soort = new SoortlidController();
-            $soort->add($lid);
-            
-            // using request and store
-            //             $request->mergeIfMissing(['omschrijving' => $new_soortlid]);
-            //             $soort->store($request);
-        }
-        
-        $fam_id = $lid->familie_id;
-        return redirect(route('contributie.show', $fam_id));
-        
-    }
-    
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Contributie  $contributie
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contributie $contributie)
-    {
-        //
     }
 }

@@ -15,7 +15,11 @@ class FamilieController extends Controller
      */
     public function index()
     {
-//         return view('familie.index');
+        $search = '';
+        $families_data = $this->db_info($search);
+        
+        
+        return view('ledendash')->with(['info' => $families_data]);
     }
 
     /**
@@ -25,8 +29,8 @@ class FamilieController extends Controller
      */
     public function create()
     {
-//         return view('familie.create');  as component/include in fam edit?
-        return view('famedit');
+        // return one single show/create/edit page for Familie en Familielid.
+        return view('/famedit');
     }
 
     /**
@@ -46,14 +50,13 @@ class FamilieController extends Controller
     
         $new_familie = Familie::create($validatedData);
  
-//         return view('famedit', ['fam' => $store]);
         return redirect(route('familie.show', $new_familie->id));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Familie  $familie
+     * @param  Familie id nummer  $familie
      * @return \Illuminate\Http\Response
      */
 //     public function show(Familie $familie)
@@ -76,7 +79,7 @@ class FamilieController extends Controller
      */
     public function edit(Familie $familie)
     {
-        //         return view('familie.edit');  as component/include in famedit?
+        return redirect(route('familie.show', $familie));
     }
 
     /**
@@ -97,7 +100,7 @@ class FamilieController extends Controller
         
         $familie->update($validatedData);
         
-        return redirect(route('familie.show', $familie->id));
+        return redirect(route('familie.show', $familie));
     }
 
     /**
@@ -113,5 +116,45 @@ class FamilieController extends Controller
         $familie->delete();
         
         return redirect('/leden');
+    }
+    
+    /**
+     * Search the specified resource in storage
+     * and return the result.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function search(Request $request)
+    { 
+        $validate = $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+        
+        $search = $request->get('search');
+        
+        if(empty($search)) {
+            return back();
+        }
+        else {
+            $users = $this->db_info($search);
+            return view('ledendash')->with(['info' => $users]);
+        }
+        
+    }
+    
+    /**
+     * Search the specified resource in storage
+     * and return the result.
+     * 
+     * @param  Search string  $search
+     * @return \Illuminate\Http\Response
+     */
+    protected function db_info($search)
+    {
+        $info = Familie::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
+
+        return $info;
+        
     }
 }
