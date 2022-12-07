@@ -34,7 +34,13 @@
                   <th class="pr-6">Soortlid</th>
                   <th class="pr-6">Bedrag</th>
                   <th class="pr-6">Boekjaar</th>
-                  <th class="pr-6">Acties</th>
+                  @can('update', App\Models\Contributie::class)
+                	<th class="pr-6">
+                		@if($jaar == date("Y"))
+                  			Acties
+                  		@endif
+                  	</th>
+                  @endcan
                 </tr>
             </thead>
             <tbody>
@@ -112,7 +118,7 @@
                 <td >{{ $lid->geboortedatum }}</td>
                 @can('update', App\Models\Contributie::class)
 				<td>
-                	<x-dropdown-link :href="route('contributie.edit', $lid->lid_id)" class="hover:bg-sky-50">
+                	<x-dropdown-link :href="route('contributie.edit', '38')" class="hover:bg-sky-50">
                     	{{ __('Wijzig') }}
                     </x-dropdown-link>
             	</td>

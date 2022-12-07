@@ -21,6 +21,6 @@ class Boekjaar extends Model
      */
     public function contributies()
     {
-        return $this->belongsTo(Contributie::class);
+        return $this->belongsTo(Contributie::class, 'id');
     }
 }

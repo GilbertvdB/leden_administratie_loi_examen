@@ -30,6 +30,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+Route::get('/helo', function () {
+    return view('components.helo');
+})->middleware(['auth', 'verified'])->name('helo');
+
 Route::get('/leden', function() {
     return redirect(route('familie.index'));
 })->middleware(['auth', 'verified'])->name('ledendash');

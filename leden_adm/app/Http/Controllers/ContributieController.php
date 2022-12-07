@@ -6,6 +6,7 @@ use App\Models\Contributie;
 use App\Models\Familielid;
 use App\Models\Soortlid;
 use App\Models\Boekjaar;
+use App\Models\Familie; // TODO delete
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\BoekjaarController;
@@ -20,7 +21,7 @@ class ContributieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         //
     }
 
@@ -52,20 +53,12 @@ class ContributieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($familie_id)
-    {   
-        //joining familie, familielid, contributie & boekjaar table.
-        $familieLeden = DB::table('families')
-        ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
-        ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
-        ->leftjoin('boekjaars', 'boekjaars.contributie_id', '=', 'contributies.id')
-        ->select('families.naam as familie','familielids.id as lid_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag', 'boekjaars.jaar')
-        ->where('families.id', $familie_id)
-        ->get();
-        
+    {
+        $familieLeden = $this->db_info($familie_id);
         $famNaam = $familieLeden->pluck('familie');
-        $incompleet_profiel = $familieLeden->where('jaar', '');
+        $incompleet_profiel = $this->check_profielen($familieLeden);
         
-        // boekjaar year record choices
+        // boekjaar contribution year record choices
         $bk = Boekjaar::all();
         $info = $bk->pluck('jaar')->unique()->values();
         
@@ -76,7 +69,8 @@ class ContributieController extends Controller
         ->with('familie_id', $familie_id)
         ->with('familie_naam', $famNaam[0]);
     }
-
+    
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -152,8 +146,6 @@ class ContributieController extends Controller
     public function destroy($id)
     {
         $this->authorize('delete', Contributie::class);
-        
-        $d = 30;
         $gegevens = Contributie::find($id);
         
         //delete boekjaar record
@@ -167,11 +159,10 @@ class ContributieController extends Controller
         //set familielied soortlid column to null
         $gegevens->lidContributie->soortlid = null;
         $gegevens->push();
+        
         //delete contribution record
         $gegevens->delete();
         
-        
-//         return view('components.helo')->with('info', $gegevens); 
         return back();
     }
 
@@ -184,12 +175,10 @@ class ContributieController extends Controller
     public function add(Familielid $familielid)
     {   
         $this->authorize('create', Contributie::class);
-        
         $lid = $familielid;
         
         // calculations
         $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);
-        
         $bedrag = $this->bereken_bedrag($this->bepaal_soortlid($leeftijd));
         
         //create table
@@ -206,6 +195,31 @@ class ContributieController extends Controller
     
     }
     
+    
+    protected function db_info($familie_id)
+    {
+        //joining familie, familielid, contributie & boekjaar table.
+        $all_info = DB::table('families')
+        ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
+        ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
+        ->leftjoin('boekjaars', 'boekjaars.contributie_id', '=', 'contributies.id')
+        ->select('families.naam as familie','familielids.id as lid_id','familielids.naam', 'familielids.geboortedatum','familielids.soortlid', 'contributies.id','contributies.soortlid as soort','contributies.leeftijd','contributies.bedrag', 'boekjaars.jaar')
+        ->where('families.id', $familie_id)
+        ->get();
+        
+        return $all_info;   
+    }
+    
+    protected function check_profielen($familieLeden) {
+        // return all familielids with no contribution record
+        $incompleet_profielen = $familieLeden->where('id', null);
+        // return empty collection if familie has no familielids yet
+        if (!$incompleet_profielen->pluck('lid_id')->first()) {
+            $incompleet_profielen = collect();
+        }
+        
+        return $incompleet_profielen;
+    }
     
     /**
      * Update user chosen date

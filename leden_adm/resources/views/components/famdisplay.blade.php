@@ -10,7 +10,7 @@
     	<div class="col-start-1 col-end-3 place-self-start">
 			@can('create', App\Models\Familie::class)
 			<a href="{{ route('familie.create') }}" 
-				class="block inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-600 active:bg-sky-700">
+				class="block inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-400 active:bg-sky-300">
 		  {{ __('+ Familie Toevoegen') }}
 		  </a>
 		  @endcan
