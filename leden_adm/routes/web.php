@@ -10,6 +10,8 @@ use App\Http\Controllers\BoekjaarController;
 use App\Http\Controllers\ContributieController;
 use App\Http\Controllers\AdminController;
 
+use App\Http\Controllers\ModalController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +30,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/test', function () {
+    return view('test');
+})->middleware(['auth', 'verified'])->name('test');
 
 
 Route::get('/helo', function () {
@@ -51,6 +57,9 @@ Route::get('/contributie.staffels', function () {
     return view('contributie.staffels');
 })
 ->middleware(['auth', 'verified'])->name('staffels');
+
+Route::resource('modal', ModalController::class)
+->middleware(['auth', 'verified']);
 
 //route for tables
 Route::middleware(['auth', 'verified'])->group(function () {
