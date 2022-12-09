@@ -12,12 +12,12 @@
         
             <!-- Naam -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
+            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  placeholder="Naam Achternaam" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
             </div>
             
             <!-- Adres -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Adres</label><input type="text" name="adres" value="{{ old('adres') }}"  required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
+            	<label class="basis-1/5">Familie Adres</label><input type="text" name="adres" value="{{ old('adres') }}"  placeholder="Straatnaam 00-A"required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
             </div>
             
             <div class="grid grid-cols-5">
@@ -122,7 +122,7 @@
             
             <!-- Naam -->
             <div class="flex flex-row items-center">
-            <label class="basis-1/5">Naam</label><input type="text" name="naam" value="{{ old('naam') }}" required class="border-none focus:ring-0 shadow-xl my-1 bg-sky-50">
+            <label class="basis-1/5">Naam</label><input type="text" name="naam" value="{{ old('naam') }}" placeholder="Naam Achternaam" required class="border-none focus:ring-0 shadow-xl my-1 bg-sky-50">
             </div>
             
             <!-- Geboortedatum -->

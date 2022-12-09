@@ -118,7 +118,7 @@
                 <td >{{ $lid->geboortedatum }}</td>
                 @can('update', App\Models\Contributie::class)
 				<td>
-                	<x-dropdown-link :href="route('contributie.edit', '38')" class="hover:bg-sky-50">
+                	<x-dropdown-link :href="route('contributie.edit', $lid->lid_id)" class="hover:bg-sky-50">
                     	{{ __('Wijzig') }}
                     </x-dropdown-link>
             	</td>
