@@ -63,7 +63,7 @@
                 </header>
 
 		
-	    <!-- Page Navigation -->
+	    <!-- Page Side Navigation -->
             <nav class="bg-white shadow">
                @include('layouts.leden_sidenav')
             </nav>
