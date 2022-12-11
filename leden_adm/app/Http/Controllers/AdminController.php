@@ -65,13 +65,15 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     ** @param  \Illuminate\Http\Request  $request
      * @param  User ID user $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $this->authorize('delete', User::class);
-        $user = User::find($id);
+        $user_id = $request->get('user-id');
+        $user = User::find($user_id);
         $user->delete();
         
         return redirect(route('admin.index'));

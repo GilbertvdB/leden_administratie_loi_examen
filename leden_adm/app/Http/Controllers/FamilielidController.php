@@ -78,14 +78,16 @@ class FamilielidController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Familielid  $familielid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Familielid $familielid)
+    public function destroy(Request $request, $familielid)
     {   
-        $this->authorize('delete', $familielid);
-        
-        $familielid->delete();
+        $this->authorize('delete', Familielid::class);
+        $id = $request->get('user-id');
+        $famlid = Familielid::find($id);
+        $famlid->delete();
 
         return back(); 
     }

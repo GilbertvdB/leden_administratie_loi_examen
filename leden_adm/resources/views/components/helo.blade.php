@@ -6,7 +6,7 @@
 	
 
 
-	Id = {{ $id }}
+	info = {{ $info }}
 
 
 

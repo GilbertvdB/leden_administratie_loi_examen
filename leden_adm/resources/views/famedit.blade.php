@@ -1,6 +1,6 @@
 <x-leden-layout>
 <div class="mx-auto overflow-auto">
-	<div class="max-w-4xl mx-auto p-2 border-t-[1px] overflow-auto bg-white drop-shadow">
+	<div class="max-w-4xl mx-auto p-2 border-t-[1px] overflow-auto bg-white shadow">
         
         <!-- FAMILIE CREATE SECTION -->
         @empty($familie)
@@ -37,7 +37,7 @@
         	<hr class="border-[1px] border-gray-200 my-2">
 		@endempty
 
-       <!-- FAMILIE EDIT SECTION -->
+       <!-- FAMILIE PROFIEL SECTION -->
         @isset($familie)		
     	<h1 class="text-2xl">Profiel Familie {{ $familie->naam }}</h1>
     	
@@ -47,61 +47,33 @@
     	<br>
     	
     	<div class="border border-sky-200 p-2">
-    	<div>
-    		<!-- Verwijder Familie profiel link -->
-    		@can('delete', $familie)
-        	<form method="POST" action="{{ route('familie.destroy', $familie) }}">
-            @csrf
-            @method('delete')
-            <div><span>Profiel - </span>
-                <span class="text-sm" >
-                	<button type="submit" class="hover:text-sky-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
-                </span>
-            </div>
-            </form>
-            @endcan
-        
-        <!-- Wijzig Familie profiel -->        
-        <div>
-        <form method="POST" action="{{ route('familie.update', $familie) }}">
-        @csrf
-        @method('patch')
-
-        <!-- Naam -->
-        <div class="flex flex-row items-center">
-        	<label class="basis-1/5">Familie Naam</label>
-        	@can('update', $familie)
-        		<input type="text" name="naam" value="{{ $familie->naam }}" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
-        	@else<span class="py-2 pl-3">{{ $familie->naam }}</span> 
-        		@endcan
-        </div>
-        
-        <!-- Adres -->
-        <div class="flex flex-row items-center">
-        	<label class="basis-1/5">Familie Adres</label>
-        	@can('update', $familie)
-        		<input type="text" name="adres" value="{{ $familie->adres }}" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
-        	@else<span class="py-2 pl-3"> {{ $familie->adres }}</span>
-				@endcan
-        </div>
-    
-        <div class="grid grid-cols-5">
-        	<div class="col-start-2 col-end-3">
+        	<div>
+        		<!-- Aanpassen Familie profiel link -->
         		@can('update', $familie)
-        		<button type="submit" class="hover:text-sky-500"><u>> Wijzig</u></button>
-        		@endcan
-        	</div>
-        </div>
-        
-        </div>
-        
-        <div>
-        	<x-input-error :messages="$errors->get('naam')" class="mt-2" />
-        	<x-input-error :messages="$errors->get('adres')" class="mt-2" />
-        </div>
-        </form>
-        </div>
-			<hr class="border-[1px] border-gray-200 my-2">
+                <div><span>Profiel -</span>
+                    <span class="text-sm" >
+                    	<a href="{{ route('familie.edit', $familie) }}" class="hover:text-sky-500">Aanpassen</a>
+                    </span> 
+                </div>
+                @endcan
+            
+            <!-- Show Familie profiel -->        
+            <div>
+                <!-- Naam -->
+                <div class="flex flex-row items-center">
+                	<label class="basis-1/5">Familie Naam</label>
+                		<span class="py-2 pl-3">{{ $familie->naam }}</span> 
+                </div>
+                
+                <!-- Adres -->
+                <div class="flex flex-row items-center">
+                	<label class="basis-1/5">Familie Adres</label>
+                		<span class="py-2 pl-3"> {{ $familie->adres }}</span>
+                </div>
+            </div>
+    
+            </div>
+    			<hr class="border-[1px] border-gray-200 my-2">
 	
 	
     	<!-- FAMILIELID SECTION -->
@@ -155,15 +127,12 @@
     	<div>
     	<!-- Verwijder Familielid profiel link -->
     	@can('delete', $lid)
-        	<form method="POST" action="{{ route('familielid.destroy', $lid) }}">
-            @csrf
-            @method('delete')
-            <div><span>Profiel -</span>
+            <div>
+            <span>Profiel -</span>
             	<span class="text-sm" >
-            		<button type="submit" class="hover:text-sky-500" onclick="return confirm('Doorgaan met profiel verwijderen?')">Verwijderen</button>
+            		<button  data-modal-toggle="popup-modal" id="{{$lid->id}}" class="hover:text-sky-500"> Verwijder{{ $lid->id }}</button>
             	</span>
             </div>
-            </form>
             @endcan
         	
             <form method="POST" action="{{ route('familielid.update', $lid) }}">
@@ -214,6 +183,11 @@
         @endisset <!-- familie -->	
         </div>
 	</div>
+	
+	<!-- delete confirmation modal -->
+	
+	<x-Delete-Form-modal :action="route('familielid.destroy', 'lid')"/>
+	
 </div>
 </div>
 </x-leden-layout>

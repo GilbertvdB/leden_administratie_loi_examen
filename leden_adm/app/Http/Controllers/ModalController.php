@@ -28,7 +28,9 @@ class ModalController extends Controller
     {
         $users = Modal::factory()->count(10)->create();
         
-        return $users;
+        return redirect(route('modal.index'));
+        
+        
     }
 
     /**
@@ -84,7 +86,7 @@ class ModalController extends Controller
      */
     public function destroy(Request $request, $id)
     {   
-        $user = $request->get('table-id');
+        $user = $request->get('user-id');
         $modal = Modal::find($user);
         $modal->delete();
         return back();

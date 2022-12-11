@@ -79,7 +79,7 @@ class FamilieController extends Controller
      */
     public function edit(Familie $familie)
     {
-        return redirect(route('familie.show', $familie));
+        return view('familie.edit')->with('familie', $familie);
     }
 
     /**

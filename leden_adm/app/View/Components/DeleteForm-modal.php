@@ -4,23 +4,24 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class Userbox extends Component
-{
+class DeleteForm-modal extends Component
+{   
+    
     /**
-     * The target string.
+     * The destroy route.
      *
      * @var string
      */
-    public $target;
-
+    public $action;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($target)
+    public function __construct($action)
     {
-        $this->target = $target;
+        $this->action = $action;
     }
 
     /**
@@ -30,6 +31,6 @@ class Userbox extends Component
      */
     public function render()
     {
-        return view('components.userbox');
+        return view('components.delete-form-modal');
     }
 }

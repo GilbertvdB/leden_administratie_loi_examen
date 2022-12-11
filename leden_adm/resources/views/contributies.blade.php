@@ -1,5 +1,5 @@
 <x-leden-layout>
-    <div class="max-w-4xl mx-auto p-2 border-t-[1px] overflow-auto bg-white drop-shadow">
+    <div class="max-w-4xl mx-auto p-2 border-t-[1px] overflow-auto bg-white shadow">
         <div>
         	<h1 class="text-2xl">Contributies Familie {{ $familie_naam }}</h1>
         </div>
@@ -66,13 +66,9 @@
                                 <x-dropdown-link :href="route('contributie.edit', $lid->lid_id )" class="hover:text-sky-500">
                                     {{ __('Wijzig') }}
                                 </x-dropdown-link>
-                                <form method="POST" action="{{ route('contributie.destroy', $lid->id) }}">
-                                    @csrf
-                                    @method('delete')
-            
-            					<button class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white hover:text-sky-500 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="submit" onclick="return confirm('Doorgaan met profiel verwijderen?')">
-            						Verwijderen</button>
-                                </form>
+            					<button  data-modal-toggle="popup-modal" id="{{$lid->id}}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-white hover:text-sky-500 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" type="button">
+            					{{ __('Verwijder') }}
+            					</button>	
                             </x-slot>
                         </x-dropdown>
                         @endif
@@ -130,6 +126,9 @@
     </div>
     <br>
     @endif
+
+	<!-- delete confirmation modal -->
+	<x-Delete-Form-modal :action="route('contributie.destroy', 'id')"/>
 
 </div>
 </x-leden-layout>

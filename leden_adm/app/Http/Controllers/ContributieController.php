@@ -82,15 +82,20 @@ class ContributieController extends Controller
         $this->authorize('update', Contributie::class);
         $lid = Familielid::find($id);
         
-        //incomplete profile check
-        if ($lid->lidContributie) {
+        // proper form filling with available info
+        if ($lid->lidContributie) {  //incomplete profile check
             $contrib = $lid->lidContributie;
+            $leeftijd = "";
         }
-        else {$contrib = "";} // no contribution records yet created
+        else {
+            $contrib = ""; // no contribution records yet created
+            $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);  // helps the user choose membership
+        }
         
         return view('contributie.edit')
         ->with(['lid' => $lid])
-        ->with(['contributie' => $contrib]);
+        ->with(['contributie' => $contrib])
+        ->with(['leeftijd_info' => $leeftijd]);
     }
 
     /**
@@ -143,10 +148,11 @@ class ContributieController extends Controller
      * @param  Contributie Id string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $this->authorize('delete', Contributie::class);
-        $gegevens = Contributie::find($id);
+        $contrib_id = $request->get('user-id');
+        $gegevens = Contributie::find($contrib_id);
         
         //delete boekjaar record
         $boekjaar = Boekjaar::find($gegevens->boekjaar->id);
@@ -164,6 +170,7 @@ class ContributieController extends Controller
         $gegevens->delete();
         
         return back();
+       
     }
 
     /**

@@ -26,15 +26,20 @@
             </div>
             
             @if($contributie)
+            	@php( $leeftijd = $contributie->leeftijd )
+            @else
+            	@php( $leeftijd = $leeftijd_info )
+            @endif
             <!-- Leeftijd -->
             <div class="mt-4">
                 <x-input-label for="leeftijd" :value="__('Leeftijd')" />
 
-                <x-text-input id="leeftijd" class="block mt-1 w-full" type="text" name="leeftijd" value="{{ $contributie->leeftijd }}" readonly/>
+                <x-text-input id="leeftijd" class="block mt-1 w-full" type="text" name="leeftijd" value="{{ $leeftijd }}" readonly/>
 
                 <x-input-error :messages="$errors->get('leeftijd')" class="mt-2" />
             </div>
 			
+			@if($contributie)
 			<!-- Bedrag -->
             <div class="mt-4">
                 <x-input-label for="bedrag" :value="__('Bedrag')" />

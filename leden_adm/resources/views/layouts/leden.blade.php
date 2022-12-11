@@ -75,11 +75,7 @@
 
 	    <!-- Page Footer -->
                 <footer class="bg-white shadow clear-both">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
-        		<h2 class="font-semibold text-4xl text-gray-800 leading-tight">
-            		{{ __('Vereniging Leden') }}
-        		</h2>
-                    </div>
+                	@include('layouts.footer')
                 </footer>
         </div>
         <!-- Tailwind Flowbite plug-in for modals -->
