@@ -21,11 +21,6 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/helo', function () {
-    return view('components.helo');
-})->middleware(['auth', 'verified'])->name('helo');
-
-
 Route::get('/', function () {
     return view('welcome');
 });
