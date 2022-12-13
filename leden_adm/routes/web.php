@@ -40,8 +40,7 @@ Route::post('/familielid.index', [FamilielidController::class, 'search'])
 
 Route::get('/contributie.staffels', function () {
     return view('contributie.staffels');
-})
-->middleware(['auth', 'verified'])->name('staffels');
+})->middleware(['auth', 'verified'])->name('staffels');
 
 //route for tables
 Route::middleware(['auth', 'verified'])->group(function () {
