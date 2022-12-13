@@ -10,8 +10,6 @@ use App\Http\Controllers\BoekjaarController;
 use App\Http\Controllers\ContributieController;
 use App\Http\Controllers\AdminController;
 
-use App\Http\Controllers\ModalController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,32 +21,24 @@ use App\Http\Controllers\ModalController;
 |
 */
 
+Route::get('/helo', function () {
+    return view('components.helo');
+})->middleware(['auth', 'verified'])->name('helo');
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect(route('familie.index'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', function () {
-    return view('test');
-})->middleware(['auth', 'verified'])->name('test');
-
-
-Route::get('/helo', function () {
-    return view('components.helo');
-})->middleware(['auth', 'verified'])->name('helo');
-
-Route::get('/leden', function() {
-    return redirect(route('familie.index'));
-})->middleware(['auth', 'verified'])->name('ledendash');
-
-Route::post('/leden', [FamilieController::class, 'search'])
+Route::post('/dashboard', [FamilieController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_familie');
 
 Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
-->middleware(['auth', 'verified'])->name('jaar');
+->middleware(['auth', 'verified'])->name('display_boekjaar');
 
 Route::post('/familielid.index', [FamilielidController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_lid');
@@ -57,9 +47,6 @@ Route::get('/contributie.staffels', function () {
     return view('contributie.staffels');
 })
 ->middleware(['auth', 'verified'])->name('staffels');
-
-Route::resource('modal', ModalController::class)
-->middleware(['auth', 'verified']);
 
 //route for tables
 Route::middleware(['auth', 'verified'])->group(function () {

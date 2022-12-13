@@ -6,7 +6,6 @@ use App\Models\Contributie;
 use App\Models\Familielid;
 use App\Models\Soortlid;
 use App\Models\Boekjaar;
-use App\Models\Familie; // TODO delete
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\BoekjaarController;
@@ -61,7 +60,7 @@ class ContributieController extends Controller
         // boekjaar contribution year record choices
         $bk = Boekjaar::all();
         $info = $bk->pluck('jaar')->unique()->values();
-        
+       
         return view('contributies')
         ->with('jaren_info', $info) //for boekjaar selection
         ->with('fam_leden', $familieLeden)
@@ -154,13 +153,13 @@ class ContributieController extends Controller
         $contrib_id = $request->get('user-id');
         $gegevens = Contributie::find($contrib_id);
         
-        //delete boekjaar record
-        $boekjaar = Boekjaar::find($gegevens->boekjaar->id);
-        $boekjaar->delete();
-        
+        // delete the related boekjaar
+        $gegevens->boekjaar()->delete();
+
         //delete soortlid record
-        $soortlid = Soortlid::find($gegevens->soortleden[0]->id);
+        $soortlid = Soortlid::find($gegevens->soortleden->last()->id); // record created with this contribution
         $soortlid->delete();
+        $gegevens->push(); //update relationship data
         
         //set familielied soortlid column to null
         $gegevens->lidContributie->soortlid = null;
@@ -170,7 +169,6 @@ class ContributieController extends Controller
         $gegevens->delete();
         
         return back();
-       
     }
 
     /**
@@ -202,7 +200,14 @@ class ContributieController extends Controller
     
     }
     
-    
+    /**
+     * Query the database for all
+     * related contribution info related
+     * familielids.
+     *
+     * @param  Familie Id string $familie_id
+     * @return query results 
+     */
     protected function db_info($familie_id)
     {
         //joining familie, familielid, contributie & boekjaar table.
@@ -216,11 +221,18 @@ class ContributieController extends Controller
         
         return $all_info;   
     }
-    
+     
+    /**
+     * Check for incomplete profile and 
+     * and returns the result.
+     *
+     * @param  database info  $familieleden
+     * @return results as collection
+     */
     protected function check_profielen($familieLeden) {
-        // return all familielids with no contribution record
+        // return all familielids with no contribution record for the current year
         $incompleet_profielen = $familieLeden->where('id', null);
-        // return empty collection if familie has no familielids yet
+        // return empty collection if familie has no familielids
         if (!$incompleet_profielen->pluck('lid_id')->first()) {
             $incompleet_profielen = collect();
         }

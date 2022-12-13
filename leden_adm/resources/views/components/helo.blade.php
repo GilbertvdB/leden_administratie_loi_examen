@@ -7,6 +7,8 @@
 
 
 	info = {{ $info }}
+	
+	{{ $info->soortleden}}
 
 
 

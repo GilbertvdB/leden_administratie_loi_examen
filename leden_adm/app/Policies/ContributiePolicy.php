@@ -83,7 +83,7 @@ class ContributiePolicy
      * @param  \App\Models\Contributie  $contributie
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Contributie $contributie)
+    public function delete(User $user)
     {
         return $user->role_id == Role::PENNINGMEESTER
 		? Response::allow()

@@ -19,7 +19,7 @@ class FamilieController extends Controller
         $families_data = $this->db_info($search);
         
         
-        return view('ledendash')->with(['info' => $families_data]);
+        return view('dashboard')->with(['info' => $families_data]);
     }
 
     /**
@@ -115,7 +115,7 @@ class FamilieController extends Controller
         
         $familie->delete();
         
-        return redirect('/leden');
+        return redirect('dashboard');
     }
     
     /**
@@ -138,7 +138,7 @@ class FamilieController extends Controller
         }
         else {
             $users = $this->db_info($search);
-            return view('ledendash')->with(['info' => $users]);
+            return view('dashboard')->with(['info' => $users]);
         }
         
     }

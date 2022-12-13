@@ -1,5 +1,5 @@
 <div>	
-    <form id="boekjaar" action="{{ route('jaar') }}" method="POST">
+    <form id="boekjaar" action="{{ route('display_boekjaar') }}" method="POST">
     @csrf
     <label class="text-lg">Boekjaar</label>
     	<select name="jaar" class="border-0 shadow-sm hover:bg-sky-50" form="boekjaar" onchange="this.form.submit()">

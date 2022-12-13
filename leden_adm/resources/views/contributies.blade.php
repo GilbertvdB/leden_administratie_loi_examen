@@ -15,8 +15,7 @@
        	@endempty
         
 		@php($contributies_leden = $fam_leden->where('jaar', $jaar))
-
-    
+					
 		<!--  Boekjaar selectie -->
 		<div>
         @include('boekjaar.index')
@@ -93,8 +92,8 @@
 	@else
 		<div class="text-lg">Geen informatie beschikbaar voor boekjaar {{ $jaar }}.</div>
 	@endif
-
-    <!-- Incompleet lid contributie profiel -->
+	
+	<!-- Incompleet lid contributie profiel -->
     <br>
     @if($incompleet->isNotEmpty())
     <div>
@@ -126,7 +125,7 @@
     </div>
     <br>
     @endif
-
+	
 	<!-- delete confirmation modal -->
 	<x-Delete-Form-modal :action="route('contributie.destroy', 'id')"/>
 

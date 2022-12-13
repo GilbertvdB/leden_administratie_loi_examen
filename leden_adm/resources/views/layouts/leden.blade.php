@@ -20,7 +20,7 @@
             <!-- Page Heading -->
                 <header class="bg-white shadow flex flex-row">
                     <div class="shrink-0 flex items-center">
-                    <a href="{{ route('ledendash') }}">
+                    <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-16 w-auto fill-current text-gray-600" />
                     </a>
                 </div>

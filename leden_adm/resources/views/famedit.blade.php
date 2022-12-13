@@ -12,7 +12,7 @@
         
             <!-- Naam -->
             <div class="flex flex-row items-center">
-            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  placeholder="Naam Achternaam" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
+            	<label class="basis-1/5">Familie Naam</label><input type="text" name="naam" value="{{ old('naam') }}"  placeholder="Achternaam" required class="border-none focus:ring-0 shadow-xl my-1 focus:bg-sky-50">
             </div>
             
             <!-- Adres -->
@@ -84,7 +84,7 @@
 	
     	<!-- FAMILIELID CREATE SECTION -->
     	@can('create', App\Models\Familielid::class)
-    	<details><summary class="block inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-600 active:bg-sky-700">
+    	<details><summary class="block cursor-pointer inline-flex items-center px-4 py-2 mt-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-sky-600 active:bg-sky-700">
     		+ Toevoegen</summary>
     	<div>
         	<form method="POST" action="{{ route('familielid.store') }}">
