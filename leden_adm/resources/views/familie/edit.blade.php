@@ -45,24 +45,26 @@
         	@else<span class="py-2 pl-3"> {{ $familie->adres }}</span>
 				@endcan
         </div>
-    
-        <div class="grid grid-cols-5">
-        	<div class="col-start-2 col-end-3">
-        		@can('update', $familie)
-        		<button type="submit" class="hover:text-sky-500"><u>> Wijzig</u></button>
-        		@endcan
-        	</div>
-        </div>
         
         </div>
-        
-        <div>
+          	@can('update', $familie)
+			 <x-primary-button class="mt-4">
+                {{ __('Wijzig') }}
+            </x-primary-button>
+			
+			<x-back-button class="ml-1 mt-4" onclick="history.back()">
+            	{{ __('Terug') }}
+            </x-back-button>
+            @endcan
+            
+            <div>
         	<x-input-error :messages="$errors->get('naam')" class="mt-2" />
         	<x-input-error :messages="$errors->get('adres')" class="mt-2" />
         </div>
         </form>
         </div>
-			<hr class="border-[1px] border-gray-200 my-2">    
+            
+            <hr class="border-[1px] border-gray-200 my-2"> 
         
         <!-- delete confirmation modal -->
 		<x-Delete-Form-modal :action="route('familie.destroy', $familie)"/>

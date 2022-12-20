@@ -2,6 +2,7 @@
     	<div class="w-44 h-screen border bg-white float-left text-lg">
  		<ul>
  		<li><a href="{{ route('dashboard') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('familie.index')) ? 'text-sky-500' : '' }}" >Dashboard</a></li>
+ 		@unless(Auth::user()->role_id == 5)
  		<li><details><summary class="cursor-pointer list-none hover:text-sky-500 flex item-center py-1 pl-2">
  		<div>Families</div>
  		<div class="ml-1">
@@ -20,8 +21,9 @@
  		<li><a href="{{ route('familielid.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('familielid*')) ? 'text-sky-500' : '' }}" >Leden</a></li>
   		<li><a href="{{ route('staffels') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('staffels')) ? 'text-sky-500' : '' }}">Staffels</a></li>
   		<li>@can('update', App\Models\User::class)
-			<a href="{{ route('admin.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('admin*')) ? 'text-sky-500' : '' }}">Authenticatie</a>
+			<a href="{{ route('admin.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('admin*')) ? 'text-sky-500' : '' }}">Authorisatie</a>
 			@endcan</li>
   		</ul>
       </div>
+      @endunless
 </div>

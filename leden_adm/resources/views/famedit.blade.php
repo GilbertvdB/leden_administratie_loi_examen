@@ -130,7 +130,7 @@
             <div>
             <span>Profiel -</span>
             	<span class="text-sm" >
-            		<button  data-modal-toggle="popup-modal" id="{{$lid->id}}" class="hover:text-sky-500"> Verwijder{{ $lid->id }}</button>
+            		<button  data-modal-toggle="popup-modal" id="{{$lid->id}}" class="hover:text-sky-500"> Verwijder</button>
             	</span>
             </div>
             @endcan
