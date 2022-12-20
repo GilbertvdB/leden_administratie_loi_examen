@@ -26,8 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-//     return redirect(route('familie.index'));
-    return view('dashboard');
+    return redirect(route('familie.index'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/dashboard', [FamilieController::class, 'search'])
