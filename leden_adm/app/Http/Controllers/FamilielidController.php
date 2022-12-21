@@ -72,7 +72,6 @@ class FamilielidController extends Controller
         $familielid->update($validatedData);
         $familielid->refresh();
         
-//         return redirect(route('familie.show', ['familie' => $familielid->familie_id]));
         return back();
     }
 

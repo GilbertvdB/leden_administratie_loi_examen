@@ -31,7 +31,7 @@ class FamilieController extends Controller
     public function create()
     {
         // return one single show/create/edit page for Familie en Familielid.
-        return view('/famedit');
+        return view('/familieprofiel');
     }
 
     /**
@@ -66,7 +66,7 @@ class FamilieController extends Controller
         $fam_data = Familie::find($familie);
         $leden_data = Familie::find($familie)->familieLeden;
         
-        return view('/famedit')
+        return view('/familieprofiel')
         ->with(['familie' => $fam_data])
         ->with(['leden' => $leden_data]);
     }
