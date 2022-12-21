@@ -15,11 +15,12 @@ class FamilieController extends Controller
      */
     public function index()
     {
-        $search = '';
+        $search = request('search');
         $families_data = $this->db_info($search);
-        
-        
-        return view('dashboard')->with(['info' => $families_data]);
+
+        return view('dashboard')
+        ->with(['info' => $families_data])
+        ->with(['zoekterm' => $search]);
     }
 
     /**
@@ -125,23 +126,12 @@ class FamilieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function search(Request $request)
-    { 
-        $validate = $request->validate([
-            'search' => 'required|string|max:255',
-        ]);
-        
-        $search = $request->get('search');
-        
-        if(empty($search)) {
-            return back();
-        }
-        else {
-            $users = $this->db_info($search);
-            return view('dashboard')->with(['info' => $users]);
-        }
-        
+    protected function search()
+    {
+        $searchTerm = request('search');
+        return redirect()->route('familie.index', ['search' => $searchTerm]);
     }
+    
     
     /**
      * Search the specified resource in storage

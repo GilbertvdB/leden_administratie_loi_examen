@@ -35,7 +35,10 @@ Route::post('/dashboard', [FamilieController::class, 'search'])
 Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
 ->middleware(['auth', 'verified'])->name('display_boekjaar');
 
-Route::post('/familielid.index', [FamilielidController::class, 'search'])
+//test
+// Route::post('familielid', [FamilielidController::class, 'search'])->name('zoek_lid');
+
+Route::post('familielid', [FamilielidController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_lid');
 
 Route::get('/contributie.staffels', function () {

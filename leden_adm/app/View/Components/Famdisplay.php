@@ -8,15 +8,17 @@ class Famdisplay extends Component
 {   
     
     public $info;
+    public $zoekterm;
     
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($info)
+    public function __construct($info, $zoekterm)
     {
         $this->info = $info;
+        $this->zoekterm = $zoekterm;
     }
     
     /**

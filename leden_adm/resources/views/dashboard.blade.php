@@ -13,7 +13,7 @@
 			
 			@else
 		    <!--Families info lijst & zoek container -->
-			<x-famdisplay :info="$info" />
+			<x-famdisplay :info="$info" :zoekterm="$zoekterm"/>
 			@endif
 			
 			</div>

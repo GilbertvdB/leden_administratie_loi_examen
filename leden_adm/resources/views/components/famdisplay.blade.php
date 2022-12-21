@@ -96,7 +96,7 @@
 </div>
 
 	<div class="mt-1">
-		{{ $info->links() }}
+		{{ $info->appends(['search' => $zoekterm])->links() }}
 	</div>
 
 </div>	

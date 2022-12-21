@@ -6,18 +6,19 @@ use App\Models\Familielid;
 use Illuminate\Http\Request;
 
 class FamilielidController extends Controller
-{
+{   
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $search = '';
-        $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
+    {
+        $zoek_term = request('search');
+        $leden = Familielid::where('naam', 'like', '%'.$zoek_term.'%')->orderBy('naam', 'asc')->simplePaginate(10);
         
-        return view('familielid.index')->with(['leden' => $leden]);
+        return view('familielid.index', compact('leden'))->with('zoekterm', $zoek_term);
     }
     
     /**
@@ -99,17 +100,10 @@ class FamilielidController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function search(Request $request)
+    protected function search()
     {
-        $search = $request->get('search');
-        
-        if(empty($search)) {
-            return back();
-        }
-        else {
-            $leden = Familielid::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
-            return view('familielid.index')->with(['leden' => $leden]);
-        }
+        $zoek_term = request('search');
+        return redirect()->route('familielid.index', ['search' => $zoek_term]);
     }
     
     /**
