@@ -37,11 +37,11 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0 ml-12">
                     <x-application-logo class="h-16"/>
                 </div>
                 	
-					<div class="text-2xl leading-7 font-semibold"><a href="#" class="text-sky-500 dark:text-white">Vereniging</a></div>
+					<div class="text-2xl leading-7 font-semibold"><a href="#" class="text-sky-500 dark:text-white ml-12">Vereniging</a></div>
 				
 				
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700">
