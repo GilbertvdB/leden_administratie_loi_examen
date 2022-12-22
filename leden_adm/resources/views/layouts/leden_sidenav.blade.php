@@ -21,7 +21,7 @@
  		<li><a href="{{ route('familielid.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('familielid*')) ? 'text-sky-500' : '' }}" >Leden</a></li>
   		<li><a href="{{ route('staffels') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('staffels')) ? 'text-sky-500' : '' }}">Staffels</a></li>
   		<li>@can('update', App\Models\User::class)
-			<a href="{{ route('admin.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('admin*')) ? 'text-sky-500' : '' }}">Authorisatie</a>
+			<a href="{{ route('admin.index') }}" class="block hover:text-sky-500 py-1 pl-2 {{ (request()->routeIs('admin*')) ? 'text-sky-500' : '' }}">Autorisatie</a>
 			@endcan</li>
   		</ul>
       </div>
