@@ -27,12 +27,12 @@ class ContributieController extends Controller
         $famNaam = $familieLeden->pluck('familie');
         $incompleet_profiel = $this->check_profielen($familieLeden);
         
-        // boekjaar contribution year record choices
+        // boekjaar contribution year record choices.
         $bk = Boekjaar::all();
         $info = $bk->pluck('jaar')->unique()->values();
        
         return view('contributies')
-        ->with('jaren_info', $info) //for boekjaar selection
+        ->with('jaren_info', $info) //for boekjaar selection component.
         ->with('fam_leden', $familieLeden)
         ->with('incompleet', $incompleet_profiel)
         ->with('familie_id', $familie_id)
@@ -51,14 +51,14 @@ class ContributieController extends Controller
         $this->authorize('update', Contributie::class);
         $lid = Familielid::find($id);
         
-        // proper form filling with available info
-        if ($lid->lidContributie) {  //incomplete profile check
+        // proper form filling with available info.
+        if ($lid->lidContributie) {  // incomplete profile check.
             $contrib = $lid->lidContributie;
             $leeftijd = "";
         }
         else {
-            $contrib = ""; // no contribution records yet created
-            $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);  // helps the user choose membership
+            $contrib = ""; // empty if no contribution records yet created.
+            $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);  // helps the user choose membership.
         }
         
         return view('contributie.edit')
@@ -85,24 +85,24 @@ class ContributieController extends Controller
         
         $new_soortlid = $request->get('soortlid');
         $lid = Familielid::find($id);
-        $lid_contributie = $lid->lidContributie; //fetch records
+        $lid_contributie = $lid->lidContributie; //fetch records.
         
-        // update existing records
+        // update existing records.
         if ($lid->soortlid) {
             $lid_contributie->update($validatedData);
             
-            // update soortlid in familielids and soortlids tabel
+            // update soortlid in familielids and soortlids table.
             $lid->soortlid = $new_soortlid;
             $lid->soortleden->omschrijving = $new_soortlid;
             $lid->push();
         }
-        // create if no contribution records exist yet
+        // create soortlid record if no contribution records exist yet.
         else {
             $lid->soortlid = $new_soortlid;
             $lid->save();
             $lid->refresh();
             
-            // autocreate table entries in contributies and soortlids
+            // autocreate table entries in contributies and soortlids.
             $this->add($lid);
             $soort = new SoortlidController();
             $soort->add($lid);
@@ -123,19 +123,19 @@ class ContributieController extends Controller
         $contrib_id = $request->get('user-id');
         $gegevens = Contributie::find($contrib_id);
         
-        // delete the related boekjaar
+        // delete the related boekjaar.
         $gegevens->boekjaar()->delete();
 
         //delete soortlid record
-        $soortlid = Soortlid::find($gegevens->soortleden->last()->id); // record created with this contribution
+        $soortlid = Soortlid::find($gegevens->soortleden->last()->id); // record created with this contribution.
         $soortlid->delete();
-        $gegevens->push(); //update relationship data
+        $gegevens->push(); //update relationship data.
         
-        //set familielied soortlid column to null
+        //set familielied soortlid column to null.
         $gegevens->lidContributie->soortlid = null;
         $gegevens->push();
         
-        //delete contribution record
+        //delete contribution record.
         $gegevens->delete();
         
         return back();
@@ -152,11 +152,11 @@ class ContributieController extends Controller
         $this->authorize('create', Contributie::class);
         $lid = $familielid;
         
-        // calculations
+        // calculations for age and ammount
         $leeftijd = $this->bereken_leeftijd($lid->geboortedatum);
         $bedrag = $this->bereken_bedrag($this->bepaal_soortlid($leeftijd));
         
-        //create table
+        // create record in contribution table.
         $contributie = Contributie::create([
             'familielid_id' => $lid->id,
             'soortlid' => $lid->soortlid,
@@ -180,7 +180,7 @@ class ContributieController extends Controller
      */
     protected function db_info($familie_id)
     {
-        //joining familie, familielid, contributie & boekjaar table.
+        //joining familie, familielid, contributie & boekjaar tables.
         $all_info = DB::table('families')
         ->leftjoin('familielids', 'families.id', '=', 'familielids.familie_id')
         ->leftjoin('contributies', 'familielids.id', '=', 'contributies.familielid_id')
@@ -200,9 +200,9 @@ class ContributieController extends Controller
      * @return results as collection
      */
     protected function check_profielen($familieLeden) {
-        // return all familielids with no contribution record for the current year
+        // return all familielids with no contribution record for the current year.
         $incompleet_profielen = $familieLeden->where('id', null);
-        // return empty collection if familie has no familielids
+        // return empty collection if familie has no familielids.
         if (!$incompleet_profielen->pluck('lid_id')->first()) {
             $incompleet_profielen = collect();
         }
@@ -238,7 +238,7 @@ class ContributieController extends Controller
     protected function bereken_leeftijd($geboortedatum)
     {
         $lid_jaar = substr($geboortedatum,6,4);
-        $jaar = date("Y"); //current year
+        $jaar = date("Y"); // current year.
         $leeftijd = $jaar - $lid_jaar;
         
         return $leeftijd;

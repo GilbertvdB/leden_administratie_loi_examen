@@ -72,9 +72,7 @@ class FamilielidController extends Controller
         $familielid->update($validatedData);
         $familielid->refresh();
         
-        return back()->with('success', 'Gegevens zijn gewijzigd!');
-//         return redirect(route('familie.show', ['familie' => $familielid->familie_id]))
-//         ->with(['update' => 'Informatie gewijzigd.']);
+        return back()->with('success', 'Gegevens zijn gewijzigd!'); // record updated message.
     }
 
     /**

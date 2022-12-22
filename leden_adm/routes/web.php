@@ -21,6 +21,7 @@ use App\Http\Controllers\AdminController;
 |
 */
 
+// routes for welcome and main page.
 Route::get('/', function () {
     return view('welcome');
 });
@@ -29,20 +30,23 @@ Route::get('/dashboard', function () {
     return redirect(route('familie.index'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// routes for using the search forms.
 Route::post('/dashboard', [FamilieController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_familie');
-
-Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
-->middleware(['auth', 'verified'])->name('display_boekjaar');
 
 Route::post('familielid', [FamilielidController::class, 'search'])
 ->middleware(['auth', 'verified'])->name('zoek_lid');
 
+// route for choosing a contribution year.
+Route::post('/contributies', [ContributieController::class, 'update_boekjaar'])
+->middleware(['auth', 'verified'])->name('display_boekjaar');
+
+// route for displaying staffels info.
 Route::get('/contributie.staffels', function () {
     return view('contributie.staffels');
 })->middleware(['auth', 'verified'])->name('staffels');
 
-//route for tables
+//routegroup for the models tables.
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('familie', FamilieController::class);
     Route::resource('familielid', FamilielidController::class)->only(['index', 'store', 'update', 'destroy']);
@@ -50,5 +54,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contributie', ContributieController::class)->only(['show', 'edit', 'update', 'destroy']);
     Route::resource('admin', AdminController::class)->only(['index', 'edit', 'update', 'destroy']);
 });
+
 
 require __DIR__.'/auth.php';

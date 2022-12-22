@@ -16,7 +16,7 @@ class FamilieController extends Controller
     public function index()
     {
         $search = request('search');
-        $families_data = $this->db_info($search);
+        $families_data = $this->db_info($search); // filtered info.
         
         return view('dashboard')
         ->with(['info' => $families_data])
@@ -128,8 +128,8 @@ class FamilieController extends Controller
      */
     protected function search()
     {
-        $searchTerm = request('search');
-        return redirect()->route('familie.index', ['search' => $searchTerm]);
+        $zoek_term = request('search');
+        return redirect()->route('familie.index', ['search' => $zoek_term]);
     }
     
     
