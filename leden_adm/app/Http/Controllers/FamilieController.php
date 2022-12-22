@@ -17,7 +17,7 @@ class FamilieController extends Controller
     {
         $search = request('search');
         $families_data = $this->db_info($search);
-
+        
         return view('dashboard')
         ->with(['info' => $families_data])
         ->with(['zoekterm' => $search]);
@@ -145,6 +145,5 @@ class FamilieController extends Controller
         $info = Familie::where('naam', 'like', '%'.$search.'%')->orderBy('naam', 'asc')->simplePaginate(10);
 
         return $info;
-        
     }
 }

@@ -119,6 +119,14 @@
 		@endcan
 			<hr class="border-[1px] border-gray-200 my-2">
 	
+	 @if (session('success'))
+  <div class="grid grid-cols-5">
+  <span class="text-green-600 italic col-start-2 col-end-4" >
+    {{ session('success') }}
+    </span>
+  </div>
+@endif
+	
         <!-- FAMILIELID EDIT SECTION -->	
     	@isset($leden)
     	@foreach ($leden as $lid)
@@ -174,6 +182,7 @@
             	<x-input-error :messages="$errors->get('geboortedatum')" class="mt-2" />
             </div>
             </form>
+                
         </div>
         	<hr class="border-[1px] border-gray-200 my-2">
     	
