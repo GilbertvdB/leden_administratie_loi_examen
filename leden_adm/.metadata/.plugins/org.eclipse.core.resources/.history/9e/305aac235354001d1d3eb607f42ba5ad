@@ -1,9 +1,0 @@
-<div class="border border-red-200 p-2">
-  This is
-  <br> 
-  the <?php echo e($slot); ?>
-
-  <br> 
-  content box for <?php echo e($target); ?>.
-</div>
-<br><?php /**PATH C:\Users\xyber\leden_adm\resources\views/components/userbox.blade.php ENDPATH**/ ?>
